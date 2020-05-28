@@ -63,5 +63,5 @@ build/
 *.perspectivev3
 *.model1v3
 *.mode2v3
-*/xcuserdata/
+*/xcuserdata/*
 
