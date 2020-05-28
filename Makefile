@@ -23,7 +23,7 @@ main.o: csgy-9163-unit1-spell/main.c
 # prog: dictionary.o spell.o main.o
 	# gcc -Wall -o spell_check dictionary.o spell.o main.o
 prog: main.o
-	gcc -Wall -o main.o
+	gcc -Wall -o spell_check main.o
 
 
 # clean:
