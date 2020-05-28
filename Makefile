@@ -23,7 +23,7 @@ main.o: main.c
 # prog: dictionary.o spell.o main.o
 	# gcc -Wall -o spell_check dictionary.o spell.o main.o
 prog: main.o
- gcc -Wall -o main.o
+	gcc -Wall -o main.o
 
 
 # clean:
