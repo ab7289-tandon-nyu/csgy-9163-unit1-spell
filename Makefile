@@ -13,7 +13,7 @@ default: prog
 # test.o: test_main.c
 	# gcc -Wall -c test_main.c
 
-main.o: main.c
+main.o: csgy-9163-unit1-spell/main.c
 	gcc -Wall -c csgy-9163-unit1-spell/main.c
 
 # test: dictionary.o spell.o test_main.o
