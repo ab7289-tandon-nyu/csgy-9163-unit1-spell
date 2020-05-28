@@ -57,11 +57,27 @@ dkms.conf
 *~.nib
 
 build/
+DerivedData/
 
 *.pbxuser
+!default.pbxuser
 *.perspective
 *.perspectivev3
+!default.perspectivev3
 *.model1v3
+!default.mode1v3
 *.mode2v3
-*/xcuserdata/*
+!default.mode2v3
+xcuserdata/
 
+## Other
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+### Xcode Patch ###
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+/*.gcno
