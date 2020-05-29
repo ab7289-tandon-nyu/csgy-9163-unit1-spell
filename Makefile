@@ -4,8 +4,8 @@ default: prog
  # assuming debian or ubuntu here
  # sudo apt-get install -y build-essential check
 
-# dictionary.o: dictionary.c
-	# gcc -Wall -c dictionary.c dictionary.h
+dictionary.o: dictionary.c
+	gcc -Wall -c dictionary.c dictionary.h
 
 # spell.o: spell.c
 	# gcc -Wall -c spell.c
@@ -22,8 +22,8 @@ main.o: csgy-9163-unit1-spell/main.c
 
 # prog: dictionary.o spell.o main.o
 	# gcc -Wall -o spell_check dictionary.o spell.o main.o
-prog: main.o
-	gcc -Wall -o spell_check main.o
+prog: dictionary.o main.o
+	gcc -Wall -o spell_check dictionary.o main.o
 
 
 # clean:
