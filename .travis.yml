@@ -6,4 +6,14 @@ dist: xenial
 compiler:
  - gcc
 
-script: make
+jobs:
+ include:
+  - name: "test clean"
+    script:
+     - make
+     - make clean
+
+  - name: "test cleanall"
+    script:
+     - make
+     - make cleanall
