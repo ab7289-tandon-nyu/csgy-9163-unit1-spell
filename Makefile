@@ -28,6 +28,8 @@ prog: dictionary.o main.o
 
 # clean:
 	# rm dictionary.o spell.o main.o test_main.o check_spell.o
+clean:
+	rm dictionary.o main.o
 
-# cleanall:clean
-	# rm spell_check
+cleanall:clean
+	rm spell_check
