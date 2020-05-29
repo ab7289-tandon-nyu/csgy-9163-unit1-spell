@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C84D403024813E2300E15097 /* dictionary.c in Sources */ = {isa = PBXBuildFile; fileRef = C84D402F24813E2300E15097 /* dictionary.c */; };
 		C8A458B1247FED00001A61CB /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = C8A458B0247FED00001A61CB /* main.c */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		C84D402E24813CB100E15097 /* dictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dictionary.h; sourceTree = "<group>"; };
+		C84D402F24813E2300E15097 /* dictionary.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dictionary.c; sourceTree = "<group>"; };
 		C8A458AD247FED00001A61CB /* csgy-9163-unit1-spell */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "csgy-9163-unit1-spell"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A458B0247FED00001A61CB /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -43,6 +45,7 @@
 			isa = PBXGroup;
 			children = (
 				C84D402E24813CB100E15097 /* dictionary.h */,
+				C84D402F24813E2300E15097 /* dictionary.c */,
 				C8A458AF247FED00001A61CB /* csgy-9163-unit1-spell */,
 				C8A458AE247FED00001A61CB /* Products */,
 			);
@@ -122,6 +125,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8A458B1247FED00001A61CB /* main.c in Sources */,
+				C84D403024813E2300E15097 /* dictionary.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
