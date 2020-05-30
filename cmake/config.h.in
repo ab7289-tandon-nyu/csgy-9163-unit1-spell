@@ -1,0 +1,3 @@
+// the configured options and settings for Spell_Check
+#define Spell_check_VERSION_MAJOR @Spell_check_VERSION_MAJOR@
+#define Spell_check_VERSION_MINOR @Spell_check_VERSION_MINOR@
