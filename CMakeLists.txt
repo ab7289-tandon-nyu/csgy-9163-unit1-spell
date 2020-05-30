@@ -11,7 +11,7 @@ set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 set(TEST_SRC_DIR ${PROJECT_SOURCE_DIR}/tests)
 
 # the following 
-inlcude_directories("${SRC_DIR}")
+include_directories("${SRC_DIR}")
 
 add_executable(spell_check ${SRC_DIR}/main.c)
 

@@ -60,6 +60,8 @@ dkms.conf
 *.swp
 *~.nib
 
+# CMake
+Makefile
 bin/
 build/
 DerivedData/
@@ -87,3 +89,5 @@ xcuserdata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 **/xcuserdata/
+
+
