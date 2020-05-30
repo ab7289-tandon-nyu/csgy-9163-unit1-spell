@@ -3,9 +3,7 @@ os:
  - linux
 dist: xenial
 
-compiler:
- - gcc
- - clang
+compiler: gcc
 
 jobs:
  include:
