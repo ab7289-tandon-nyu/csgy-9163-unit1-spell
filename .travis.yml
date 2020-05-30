@@ -5,6 +5,7 @@ dist: xenial
 
 compiler:
  - gcc
+ - clang
 
 jobs:
  include:
