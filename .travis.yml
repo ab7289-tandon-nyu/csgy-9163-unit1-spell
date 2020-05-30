@@ -5,6 +5,11 @@ dist: xenial
 
 compiler: gcc
 
+install:
+  - sudo apt-get update
+  - sudo apt-get install check build-essential
+  - which check
+
 before_script:
   # create a build folder for the out-of-source build
   - mkdir build
