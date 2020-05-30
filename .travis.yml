@@ -8,11 +8,21 @@ compiler: gcc
 jobs:
  include:
   - name: "test clean"
+    
+    install:
+     - sudo apt-get update
+     - sudo apt-get install check build-essential
+
     script:
      - make
      - make clean
 
   - name: "test cleanall"
+
+    install:
+     - sudo apt-get update
+     - sudo apt-get install check build-essential
+
     script:
      - make
      - make cleanall
