@@ -8,9 +8,9 @@ compiler: gcc
 install:
   - sudo apt-get update
   - sudo apt-get install check build-essential
-  - which check
 
 before_script:
+  - which check
   # create a build folder for the out-of-source build
   - mkdir build
   # switch to build dir
