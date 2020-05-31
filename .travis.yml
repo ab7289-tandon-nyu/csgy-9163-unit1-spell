@@ -10,7 +10,6 @@ install:
   - sudo apt-get install check build-essential
 
 before_script:
-  - which check
   # create a build folder for the out-of-source build
   - mkdir build
   # switch to build dir
