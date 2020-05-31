@@ -14,6 +14,6 @@ set(TEST_SOURCES
     test_main.c
 )
 
-add_executable(TEST_MAIN ${TEST_SOURCES})
-target_link_libraries(check_main main ${CHECK_LIBRARIES})
+add_executable(test_main ${TEST_SOURCES})
+target_link_libraries(test_main dictionary ${CHECK_LIBRARIES})
 

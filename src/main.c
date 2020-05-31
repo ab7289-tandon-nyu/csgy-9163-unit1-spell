@@ -6,6 +6,7 @@
 //  Copyright © 2020 Alex Biehl. All rights reserved.
 //
 #include <stdio.h>
+#include "dictionary.h"
 
 int main(int argc, const char * argv[]) {
     // insert code here...
