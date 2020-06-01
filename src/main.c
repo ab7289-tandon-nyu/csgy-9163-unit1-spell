@@ -5,8 +5,8 @@
 //  Created by Alex Biehl on 5/28/20.
 //  Copyright © 2020 Alex Biehl. All rights reserved.
 //
-#include <stdio.h>
 #include "dictionary.h"
+#include <stdio.h>
 
 int main(int argc, const char * argv[]) {
     // insert code here...
