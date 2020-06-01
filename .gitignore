@@ -51,11 +51,18 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+
+# vscode config
+.vscode/
+
 # Mac / Xcode stuff
 .DS_Store
 *.swp
 *~.nib
 
+# CMake
+Makefile
+bin/
 build/
 DerivedData/
 
@@ -82,3 +89,5 @@ xcuserdata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 **/xcuserdata/
+
+

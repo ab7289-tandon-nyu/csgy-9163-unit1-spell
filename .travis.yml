@@ -5,24 +5,20 @@ dist: xenial
 
 compiler: gcc
 
-jobs:
- include:
-  - name: "test clean"
-    
-    install:
-     - sudo apt-get update
-     - sudo apt-get install check build-essential
+install:
+  - sudo apt-get update
+  - sudo apt-get install check build-essential pkg-config
 
-    script:
-     - make
-     - make clean
+before_script:
+  # create a build folder for the out-of-source build
+  - mkdir build
+  # switch to build dir
+  - cd build
+  # run cmake; hre we assume that the project's
+  # top-level CMakeLists.txt is located at '..'
+  - cmake ..
 
-  - name: "test cleanall"
-
-    install:
-     - sudo apt-get update
-     - sudo apt-get install check build-essential
-
-    script:
-     - make
-     - make cleanall
+script:
+  # once CMake has done its job we just build using make as usual
+  - make
+  # - make test
