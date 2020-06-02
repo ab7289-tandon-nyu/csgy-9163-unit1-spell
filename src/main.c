@@ -5,7 +5,7 @@
 //  Created by Alex Biehl on 5/28/20.
 //  Copyright © 2020 Alex Biehl. All rights reserved.
 //
-#include "dictionary.h"
+#include "spell.h"
 #include <stdio.h>
 
 int main(int argc, const char * argv[]) {

@@ -13,3 +13,18 @@
 #define DICTIONARY "wordlist.txt"
 #define TESTDICT "test_wordlist.txt"
 
+// TODO add tests
+
+
+
+
+
+int main(void) {
+    // return success for now since we don't have any tests
+    return 0;
+}
+
+
+
+
+
