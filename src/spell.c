@@ -32,3 +32,59 @@ int hash_function(const char* word)
     int bucket = sum % HASH_SIZE;
     return bucket;
 }
+
+
+// given a dictionary file and a hashtable, load the dictionary file 
+// into the hastable
+// if successfull returns true
+// otherwise returns false
+bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
+
+    // initialize hashtable
+    hashtable[HASH_SIZE];
+    for (int i = 0; i < HASH_SIZE; i++) {
+        hashtable[i] = NULL;
+    }
+
+    // make sure we weren't handed an empty pointer
+    if (dictionary_file == NULL) {
+        printf("dictionary_file was null");
+        return false;
+    }
+    
+    FILE * fptr;
+    char * line = malloc(LENGTH);
+    size_t len = 0;
+    ssize_t read;
+
+    fptr = fopen(*dictionary_file, "r");
+    if (fptr == NULL) {
+        printf("fptr was null");
+        return false;
+    }
+
+    while ((read = getline(&line, &len, fptr)) != -1) {
+        printf("read word %s\n", line);
+        if (read <= LENGTH) {
+            hashmap_t new_node = (hashmap_t) malloc(sizeof(hashmap_t));
+            new_node->next = NULL;
+            strcopy(new_node->word, &line);
+            printf("\tcopied word is: %s\n", new_node->word);
+            int bucket = hash_function(&line);
+
+            if (hashtable[bucket] == NULL) {
+                hashtable[bucket] = new_node;
+            } else {
+                new_node->next = hashtable[bucket];
+                hashtable[bucket] = new_node;
+            }
+        } else {
+            printf("word was too big %s", line);
+        }
+    }
+
+    // close file
+    fclose(fptr);
+
+    return false;
+}
