@@ -1,5 +1,5 @@
 set(LIB_SOURCES
-  dictionary.c
+  spell.c
 )
 
 set(MAIN_SOURCES
@@ -8,17 +8,17 @@ set(MAIN_SOURCES
 
 set(HEADERS 
   ${CONFIG_HEADER}
-  dictionary.h
+  spell.h
 )
 
-add_library(dictionary STATIC ${LIB_SOURCES} ${HEADERS})
+add_library(spell STATIC ${LIB_SOURCES} ${HEADERS})
 
 add_executable(main ${HEADERS} ${MAIN_SOURCES})
-target_link_libraries(main dictionary)
+target_link_libraries(main spell)
 
-install(TARGETS dictionary
+install(TARGETS spell
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/dictionary.h DESTINATION include)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/spell.h DESTINATION include)
