@@ -104,5 +104,5 @@ add_subdirectory(tests)
 ###############################################################################
 # Unit tests
 enable_testing()
-add_test(NAME test_main COMMAND test_main)
+add_test(NAME test_spell COMMAND test_spell)
 
