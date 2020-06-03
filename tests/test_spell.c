@@ -48,7 +48,7 @@ END_TEST
 START_TEST(test_dictionary_bad_hashtable) {
     
     hashmap_t hashtable = NULL;
-    ck_assert(!load_dictionary(TESTDICT, &hashtable));
+    ck_assert(!load_dictionary(TESTDICT, hashtable));
 
 } END_TEST
 
