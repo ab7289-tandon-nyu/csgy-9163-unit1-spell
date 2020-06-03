@@ -40,8 +40,13 @@ int hash_function(const char* word)
 // otherwise returns false
 bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
 
-    // initialize hashtable
-    hashtable[HASH_SIZE];
+    // check if hashtable is null
+    if (hashtable == NULL) {
+        // hashtable was not initialized
+        return false;
+    }
+    
+    // initialize each of its values to NULL if it's valid
     for (int i = 0; i < HASH_SIZE; i++) {
         hashtable[i] = NULL;
     }
@@ -64,13 +69,13 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
     }
 
     while ((read = getline(&line, &len, fptr)) != -1) {
-        printf("read word %s\n", line);
+        // printf("read word %s\n", line);
         if (read <= LENGTH) {
             hashmap_t new_node = (hashmap_t) malloc(sizeof(hashmap_t));
             new_node->next = NULL;
             strcpy(new_node->word, line);
             
-            printf("\tcopied word is: %s\n", new_node->word);
+            // printf("\tcopied word is: %s\n", new_node->word);
             int bucket = hash_function(line);
 
             if (hashtable[bucket] == NULL) {

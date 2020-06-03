@@ -43,12 +43,27 @@ START_TEST(test_dictionary_normal)
 }
 END_TEST
 
+START_TEST(test_dictionary_bad_hashtable) {
+    
+    ck_assert(!load_dictionary(TESTDICT, NULL));
+
+} END_TEST
+
+START_TEST(test_dictionary_empty_filename) {
+    
+    hashmap_t hashtable[HASH_SIZE];
+    ck_assert(!load_dictionary("bad_file.txt", hashtable));
+
+} END_TEST
+
 Suite * check_dictionary_suite(void) {
     Suite * suite;
     TCase * check_dictionary_case;
     suite = suite_create("check_dictionary");
     check_dictionary_case = tcase_create("Core");
     tcase_add_test(check_dictionary_case, test_dictionary_normal);
+    tcase_add_test(check_dictionary_case, test_dictionary_bad_hashtable);
+    tcase_add_test(check_dictionary_case, test_dictionary_empty_filename);
     suite_add_tcase(suite, check_dictionary_case);
 
     return suite;
@@ -62,6 +77,8 @@ int main(void) {
     suite = check_dictionary_suite();
     runner = srunner_create(suite);
     srunner_set_log(runner, "test.log");
+    // uncomment the next line if debugging
+    // srunner_set_fork_status(runner, CK_NOFORK);
     srunner_run_all(runner, CK_NORMAL);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);
