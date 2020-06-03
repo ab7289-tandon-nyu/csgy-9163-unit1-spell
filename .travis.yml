@@ -6,8 +6,8 @@ dist: xenial
 compiler: gcc
 
 install:
-  - sudo apt-get update
-  - sudo apt-get install check build-essential pkg-config
+  - sudo apt-get update && sudo apt-get upgrade
+  - sudo apt-get install build-essential check pkg-config
 
 before_script:
   # create a build folder for the out-of-source build
