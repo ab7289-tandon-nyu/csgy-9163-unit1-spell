@@ -14,6 +14,7 @@
 
 #define DICTIONARY "../res/wordlist.txt"
 #define TESTDICT "../res/test_wordlist.txt"
+// #define TESTDICT "test_wordlist.txt"
 
 // TODO add tests
 
@@ -89,10 +90,14 @@ START_TEST(test_check_word) {
 
     hashmap_t hashtable[HASH_SIZE];
     load_dictionary(TESTDICT, hashtable);
-    const char * word = "FIRST";
+
+    const char * w = "first\n";
+    ck_assert(check_word(w, hashtable));
+
+    const char * word = "FIRST\n";
     ck_assert(check_word(word, hashtable));
 
-    const char * word1 = "sEconD";
+    const char * word1 = "sEconD\n";
     ck_assert(check_word(word1, hashtable));
 
     const char * word_invalid = "nOt HeRe";
@@ -172,7 +177,7 @@ int main(void) {
     runner = srunner_create(suite);
     srunner_set_log(runner, "test.log");
     // uncomment the next line if debugging
-    // srunner_set_fork_status(runner, CK_NOFORK);
+    srunner_set_fork_status(runner, CK_NOFORK);
     srunner_run_all(runner, CK_NORMAL);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);

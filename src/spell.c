@@ -90,8 +90,10 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
     }
 
     // close file
-    fclose(fptr);
-
+    int result = fclose(fptr);
+    if (result != 0) {
+        printf("unable to close the file");
+    }
     return true;
 }
 
@@ -118,7 +120,16 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     }
 
     int bucket = hash_function(word);
-    hashmap_t cursor = hashtable[bucket];
+    hashmap_t cursor;
+    // move the cursor along the hashtable
+    for (int i = 0; i < bucket; i++) {
+        hashtable++;
+    }
+    cursor = *hashtable;
+    // move the cursor back
+    for (int i = 0; i < bucket; i++) {
+        hashtable--;
+    }
 
     while (cursor != NULL) {
         if (strcmp(word, cursor->word) == 0) {
@@ -126,12 +137,16 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
         }
         cursor = cursor->next;
     }
-
-    cursor = hashtable[bucket];
     
     // set word to lowercase
     char l_word[LENGTH + 1];
     lower_case(l_word, word); 
+
+    bucket = hash_function(l_word);
+    for (int i = 0; i < bucket; i++) {
+        hashtable++;
+    }
+    cursor = *hashtable;
 
     while (cursor != NULL) {
         if (strcmp(l_word, cursor->word) == 0) {
