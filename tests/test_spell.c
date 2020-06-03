@@ -8,6 +8,7 @@
 #include <config.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include <check.h>
 #include "../src/spell.h"
 
@@ -16,11 +17,29 @@
 
 // TODO add tests
 
+bool check_bucket(hashmap_t map, char * test_val);
 
 START_TEST(test_dictionary_normal)
 {
     hashmap_t hashtable[HASH_SIZE];
     ck_assert(load_dictionary(TESTDICT, hashtable));
+    // check buckets
+
+    char * test_val = "first\n";
+    int hash = hash_function(test_val);
+    ck_assert(check_bucket(hashtable[hash], test_val));
+    
+    test_val = "second\n";
+    hash = hash_function(test_val);
+    ck_assert(check_bucket(hashtable[hash], test_val));
+
+    test_val = "third\n";
+    hash = hash_function(test_val);
+    ck_assert(check_bucket(hashtable[hash], test_val));
+
+    test_val = "test\n";
+    hash = hash_function(test_val);
+    ck_assert(check_bucket(hashtable[hash], test_val));
 }
 END_TEST
 
@@ -48,6 +67,14 @@ int main(void) {
     srunner_free(runner);
 
     return (failed == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
+}
+
+bool check_bucket(hashmap_t map, char * test_val) {
+    while (map->next != NULL && strcmp(test_val, map->word) != 0) {
+        map = map->next;
+    }
+    
+    return (strcmp(test_val, map->word) == 0);
 }
 
 
