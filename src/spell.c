@@ -53,11 +53,11 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
     }
     
     FILE * fptr;
-    char * line = malloc(LENGTH);
+    char * line = NULL;
     size_t len = 0;
     ssize_t read;
 
-    fptr = fopen(*dictionary_file, "r");
+    fptr = fopen(dictionary_file, "r");
     if (fptr == NULL) {
         printf("fptr was null");
         return false;
@@ -68,9 +68,10 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
         if (read <= LENGTH) {
             hashmap_t new_node = (hashmap_t) malloc(sizeof(hashmap_t));
             new_node->next = NULL;
-            strcopy(new_node->word, &line);
+            strcpy(new_node->word, line);
+            
             printf("\tcopied word is: %s\n", new_node->word);
-            int bucket = hash_function(&line);
+            int bucket = hash_function(line);
 
             if (hashtable[bucket] == NULL) {
                 hashtable[bucket] = new_node;
@@ -86,5 +87,5 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
     // close file
     fclose(fptr);
 
-    return false;
+    return true;
 }

@@ -7,9 +7,13 @@
 //
 #include "spell.h"
 #include <stdio.h>
+#include <stdbool.h>
 
 int main(int argc, const char * argv[]) {
     // insert code here...
     printf("Hello, World2!\n");
-    return 0;
+    hashmap_t map[HASH_SIZE];
+    bool loaded = load_dictionary("/Users/alexbiehl/dev/workspace/NYU/tandon_mscs/csgy9163_ApplicationSecurity/csgy-9163-unit1-spell/res/test_wordlist.txt", map);
+
+    return (loaded == true ? 0 : 1);
 }
