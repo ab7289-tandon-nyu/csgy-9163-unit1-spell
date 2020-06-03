@@ -128,18 +128,19 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     }
 
     cursor = hashtable[bucket];
+    
     // set word to lowercase
-    // for (int i = 0; word[i] != "\0"; ++i) {
-    //     word[i] = tolower(word[i]);
-    // }
-    // while (cursor != NULL) {
-    //     if (strcmp(lower_case(word), cursor->word) == 0) {
-    //         return true;
-    //     }
-    //     cursor = cursor->next;
-    // }
+    char l_word[LENGTH + 1];
+    lower_case(l_word, word); 
 
-    return true;
+    while (cursor != NULL) {
+        if (strcmp(l_word, cursor->word) == 0) {
+            return true;
+        }
+        cursor = cursor->next;
+    }
+
+    return false;
 }
 
 
@@ -167,13 +168,6 @@ bool lower_case(char * l_word, const char * word) {
         l_word[i] = NULL;
     }
 
-    // int i = 0;
-    // while (word[i] != "\0") {
-    //     l_word[i] = tolower(word[i]);
-    //     ++i;
-    // }
-    // // make sure we null terminate the new word
-    // l_word[i] = "\0";
     for (int i = 0; word[i]; ++i) {
         l_word[i] = tolower(word[i]);
     }

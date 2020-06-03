@@ -84,6 +84,21 @@ START_TEST(test_check_word_empty_table) {
     ck_assert(!check_word(word, NULL));
 
 } END_TEST
+
+START_TEST(test_check_word) {
+
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(TESTDICT, hashtable);
+    const char * word = "FIRST";
+    ck_assert(check_word(word, hashtable));
+
+    const char * word1 = "sEconD";
+    ck_assert(check_word(word1, hashtable));
+
+    const char * word_invalid = "nOt HeRe";
+    ck_assert(!check_word(word_invalid, hashtable));
+
+} END_TEST
 //end check word_test cases
 
 // start lower_case test cases
@@ -135,6 +150,7 @@ Suite * check_dictionary_suite(void) {
     check_word_case = tcase_create("Check Word");
     tcase_add_test(check_word_case, test_check_word_empty_word);
     tcase_add_test(check_word_case, test_check_word_empty_table);
+    tcase_add_test(check_word_case, test_check_word);
     suite_add_tcase(suite, check_word_case);
 
     check_lower_case = tcase_create("Lower Case");
@@ -156,7 +172,7 @@ int main(void) {
     runner = srunner_create(suite);
     srunner_set_log(runner, "test.log");
     // uncomment the next line if debugging
-    // srunner_set_fork_status(runner, CK_NOFORK);
+    srunner_set_fork_status(runner, CK_NOFORK);
     srunner_run_all(runner, CK_NORMAL);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);
