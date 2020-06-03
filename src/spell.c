@@ -94,3 +94,88 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
 
     return true;
 }
+
+/**
+ * Returns true if word is in dictionary else false.
+ */
+/**
+ * Inputs:
+ *  word:       A word to check the spelling of.
+ *  hashtable:  The hash table used to determine spelling
+ *
+ * Returns:
+ *  bool:       A boolean value indicating if the word was correctly spelled.
+ *
+ * Modifies:
+ *
+ * Example:
+ *  bool correct  = check_word(word, hashtable);
+ **/
+bool check_word(const char* word, hashmap_t hashtable[]) {
+
+    if (word == NULL || hashtable == NULL) {
+        return false;
+    }
+
+    int bucket = hash_function(word);
+    hashmap_t cursor = hashtable[bucket];
+
+    while (cursor != NULL) {
+        if (strcmp(word, cursor->word) == 0) {
+            return true;
+        }
+        cursor = cursor->next;
+    }
+
+    cursor = hashtable[bucket];
+    // set word to lowercase
+    // for (int i = 0; word[i] != "\0"; ++i) {
+    //     word[i] = tolower(word[i]);
+    // }
+    // while (cursor != NULL) {
+    //     if (strcmp(lower_case(word), cursor->word) == 0) {
+    //         return true;
+    //     }
+    //     cursor = cursor->next;
+    // }
+
+    return true;
+}
+
+
+/**
+ * Returns a string as lower case
+ * */
+/**
+ * Inputs:
+ *  l_word:     the word to be populated
+ *  word:       the word to be made lower_case
+ * 
+ * Returns:
+ *  bool:      whether or not the word was made lower case
+ * 
+ * Modifies:
+ *  l_word:      l_word should be filled by the word all lower case
+ **/
+bool lower_case(char * l_word, const char * word) {
+    
+    if (l_word == NULL || word == NULL) {
+        return false;
+    }
+
+    for (int i = 0; i < LENGTH; i++) {
+        l_word[i] = NULL;
+    }
+
+    // int i = 0;
+    // while (word[i] != "\0") {
+    //     l_word[i] = tolower(word[i]);
+    //     ++i;
+    // }
+    // // make sure we null terminate the new word
+    // l_word[i] = "\0";
+    for (int i = 0; word[i]; ++i) {
+        l_word[i] = tolower(word[i]);
+    }
+    return true;
+}

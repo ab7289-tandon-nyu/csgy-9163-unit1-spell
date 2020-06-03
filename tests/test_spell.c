@@ -19,6 +19,8 @@
 
 bool check_bucket(hashmap_t map, char * test_val);
 
+
+// start dictionary load test cases
 START_TEST(test_dictionary_normal)
 {
     hashmap_t hashtable[HASH_SIZE];
@@ -62,11 +64,61 @@ START_TEST(test_dictionary_empty_filename) {
     ck_assert(!load_dictionary("bad_file.txt", hashtable));
 
 } END_TEST
+// end dictionary load test cases
+
+//start check_word test cases
+START_TEST(test_check_word_empty_word) {
+
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(TESTDICT, hashtable);
+    const char * null_word = NULL;
+    ck_assert(!check_word(null_word, hashtable));
+
+} END_TEST
+
+START_TEST(test_check_word_empty_table) {
+
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(TESTDICT, hashtable);
+    const char * word = "first";
+    ck_assert(!check_word(word, NULL));
+
+} END_TEST
+//end check word_test cases
+
+// start lower_case test cases
+
+START_TEST(test_lower_null_l_word) {
+
+    char * word = "WORD";
+    ck_assert(!lower_case(NULL, word));
+
+} END_TEST
+
+START_TEST(test_lower_null_word) {
+
+    char l_word[LENGTH];
+    ck_assert(!lower_case(l_word, NULL));
+
+} END_TEST
+
+START_TEST(test_lower_word) {
+
+    char l_word[LENGTH + 1];
+    char * word = "WORD";
+    ck_assert(lower_case(l_word, word));
+    ck_assert(strcmp(l_word, "word") == 0);
+
+} END_TEST
+
+// end lower_case test cases
 
 Suite * check_dictionary_suite(void) {
     Suite * suite;
     TCase * check_dictionary_case;
     TCase * check_dictionary_input_case;
+    TCase * check_word_case;
+    TCase * check_lower_case;
 
     suite = suite_create("check_dictionary");
 
@@ -79,6 +131,18 @@ Suite * check_dictionary_suite(void) {
     tcase_add_test(check_dictionary_input_case, test_dictionary_empty_filename);
     tcase_add_test(check_dictionary_input_case, test_dictionary_null_hashtable);
     suite_add_tcase(suite, check_dictionary_input_case);
+
+    check_word_case = tcase_create("Check Word");
+    tcase_add_test(check_word_case, test_check_word_empty_word);
+    tcase_add_test(check_word_case, test_check_word_empty_table);
+    suite_add_tcase(suite, check_word_case);
+
+    check_lower_case = tcase_create("Lower Case");
+    tcase_add_test(check_lower_case, test_lower_null_l_word);
+    tcase_add_test(check_lower_case, test_lower_null_word);
+    tcase_add_test(check_lower_case, test_lower_word);
+    suite_add_tcase(suite, check_lower_case);
+
 
     return suite;
 }

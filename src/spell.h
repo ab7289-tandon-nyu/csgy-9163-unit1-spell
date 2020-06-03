@@ -93,4 +93,20 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]);
  **/
 int hash_function(const char* word);
 
+/**
+ * Returns a string as lower case
+ * */
+/**
+ * Inputs:
+ *  l_word:     the word to be populated
+ *  word:       the word to be made lower_case
+ * 
+ * Returns:
+ *  bool:      whether or not the word was made lower case
+ * 
+ * Modifies:
+ *  l_word:      l_word should be filled by the word all lower case
+ **/
+bool lower_case(char * l_word, const char * word);
+
 #endif /* dictionary_h */
