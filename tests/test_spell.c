@@ -45,6 +45,13 @@ END_TEST
 
 START_TEST(test_dictionary_bad_hashtable) {
     
+    hashmap_t hashtable = NULL;
+    ck_assert(!load_dictionary(TESTDICT, hashtable));
+
+} END_TEST
+
+START_TEST(test_dictionary_null_hashtable) {
+    
     ck_assert(!load_dictionary(TESTDICT, NULL));
 
 } END_TEST
@@ -59,12 +66,19 @@ START_TEST(test_dictionary_empty_filename) {
 Suite * check_dictionary_suite(void) {
     Suite * suite;
     TCase * check_dictionary_case;
+    TCase * check_dictionary_input_case;
+
     suite = suite_create("check_dictionary");
+
     check_dictionary_case = tcase_create("Core");
     tcase_add_test(check_dictionary_case, test_dictionary_normal);
-    tcase_add_test(check_dictionary_case, test_dictionary_bad_hashtable);
-    tcase_add_test(check_dictionary_case, test_dictionary_empty_filename);
     suite_add_tcase(suite, check_dictionary_case);
+
+    check_dictionary_input_case = tcase_create("Inputs");
+    tcase_add_test(check_dictionary_input_case, test_dictionary_bad_hashtable);
+    tcase_add_test(check_dictionary_input_case, test_dictionary_empty_filename);
+    tcase_add_test(check_dictionary_input_case, test_dictionary_null_hashtable);
+    suite_add_tcase(suite, check_dictionary_input_case);
 
     return suite;
 }
