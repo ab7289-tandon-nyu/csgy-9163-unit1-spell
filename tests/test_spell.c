@@ -14,7 +14,6 @@
 
 #define DICTIONARY "../res/wordlist.txt"
 #define TESTDICT "../res/test_wordlist.txt"
-// #define TESTDICT "test_wordlist.txt"
 
 // TODO add tests
 
@@ -133,12 +132,102 @@ START_TEST(test_lower_word) {
 
 // end lower_case test cases
 
+// start split_line test cases
+
+START_TEST(test_split_line_empty) {
+
+    char * line = "";
+    int len = 32;
+    char * word_list[len];
+    int count = split_line(line, word_list, len);
+    bool count_correct = count == 0;
+    
+    ck_assert(count_correct);
+
+} END_TEST
+
+START_TEST(test_split_line_single) {
+
+    char * line = "hello";
+    int len = 32;
+    char * word_list[len];
+    int count = split_line(line, word_list, len);
+    
+    bool count_correct = count == 1;
+    bool word_correct = (strcmp(*word_list, "hello") == 0);
+
+    for (int i = 0; i < count; ++i) {
+        free(word_list[i]);
+    }
+
+    ck_assert(count_correct);
+    ck_assert(word_correct);
+
+} END_TEST
+
+START_TEST(test_split_line_multiple) {
+
+    char * line = "hello world";
+    int len = 32;
+    char * word_list[len];
+    int count = split_line(line, word_list, len);
+    bool count_correct = count == 2;
+
+    char * answers[] = { "hello","world" };
+    bool word_correct = true;
+    for (int i = 0; i < count; i++) {
+        //printf("Word %d is: %s \n", i, word_list[i]);
+        if (strcmp(word_list[i], answers[i]) != 0) {
+            word_correct = false;
+            break;
+        }
+    }
+
+    for (int i = 0; i < count; ++i) {
+        free(word_list[i]);
+    }
+
+    ck_assert(count_correct);
+    ck_assert(word_correct);
+
+} END_TEST
+
+START_TEST (test_split_line_multi_spaces) {
+
+    char * line = " hello  world   mate ";
+    int len = 32;
+    char * word_list[len];
+    int count = split_line(line, word_list, len);
+    bool count_correct = count == 3;
+
+    char * answers[] = { "hello", "world", "mate" };
+    bool word_correct = true;
+    for (int i = 0; i < count; ++i) {
+        //printf("Word %d is: %s \n", i, word_list[i]);
+        if (strcmp(word_list[i], answers[i]) != 0) {
+            word_correct = false;
+            break;
+        }
+    }
+
+    for (int i = 0; i < count; ++i) {
+        free(word_list[i]);
+    }
+
+    ck_assert(count_correct);
+    ck_assert(word_correct);
+
+} END_TEST
+
+// end split_line test cases
+
 Suite * check_dictionary_suite(void) {
     Suite * suite;
     TCase * check_dictionary_case;
     TCase * check_dictionary_input_case;
     TCase * check_word_case;
     TCase * check_lower_case;
+    TCase * check_split_line_case;
 
     suite = suite_create("check_dictionary");
 
@@ -164,6 +253,13 @@ Suite * check_dictionary_suite(void) {
     tcase_add_test(check_lower_case, test_lower_word);
     suite_add_tcase(suite, check_lower_case);
 
+    check_split_line_case = tcase_create("Split Line");
+    tcase_add_test(check_split_line_case, test_split_line_empty);
+    tcase_add_test(check_split_line_case, test_split_line_single);
+    tcase_add_test(check_split_line_case, test_split_line_multiple);
+    tcase_add_test(check_split_line_case, test_split_line_multi_spaces);
+    suite_add_tcase(suite, check_split_line_case);
+
 
     return suite;
 }
@@ -177,7 +273,7 @@ int main(void) {
     runner = srunner_create(suite);
     srunner_set_log(runner, "test.log");
     // uncomment the next line if debugging
-    // srunner_set_fork_status(runner, CK_NOFORK);
+    srunner_set_fork_status(runner, CK_NOFORK);
     srunner_run_all(runner, CK_NORMAL);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);

@@ -126,7 +126,7 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
         hashtable++;
     }
     cursor = *hashtable;
-    // move the cursor back
+    // move the cursor back, not sure if this is necessary but the tests pass
     for (int i = 0; i < bucket; i++) {
         hashtable--;
     }
@@ -158,6 +158,51 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     return false;
 }
 
+/**
+ * Array misspelled is populated with words that are misspelled. Returns the length of misspelled.
+ */
+/**
+ * Inputs:
+ *  fp:         A file pointer to the document to check for spelling errors.
+ *  hashtable:  The hash table used to determine spelling
+ *  misspelled: An empty char* array to be populated with misspelled words.
+ *              This array will never be greater than 1000 words long.
+ *
+ * Returns:
+ *  int:        The number of words in the misspelled arary.
+ *
+ * Modifies:
+ *  misspelled: This array will be filled with misspelled words.
+ *
+ * Example:
+ *  int num_misspelled = check_words(text_file, hashtable, misspelled);
+ **/
+int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
+
+    int num_misspelled = 0;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    if (fp == NULL) {
+        printf("fp was null");
+        return -1;
+    }
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        // split line on spaces
+
+        //for each word in line
+            //remove punctuation
+            //check_word
+                //if not check word
+                //append to mispelled
+                //incrememnt misspelled
+    }
+
+    return num_misspelled;
+}
+
 
 /**
  * Returns a string as lower case
@@ -187,4 +232,45 @@ bool lower_case(char * l_word, const char * word) {
         l_word[i] = tolower(word[i]);
     }
     return true;
+}
+
+/**
+ * Returns an array of strings and a length
+ * */
+/**
+ * Inputs:
+ *  line:           the line to be split
+ *  word_list:      the array of size to fill with the words
+ *  len:            the length of the passed in array
+ * 
+ * Returns:
+ *  int:            the number of words in the returned list
+ * 
+ * Modifies:
+ *  word_list:      word_list should be filled with the split words
+ **/
+int split_line(const char * line, char ** word_list, int list_length) {
+    int word_size = 0;
+    char delim[] = " ";
+
+    int line_size = strlen(line);
+    char temp_str[line_size];
+    // want to copy to a temporary string since strtok modifies
+    // the original
+    strcpy(temp_str, line);
+
+    // get the pointer to the first token
+    char * split_ptr = strtok(temp_str, delim);
+    while (split_ptr != NULL && word_size < list_length) {
+        // allocate space for the new word
+        *word_list = (char *) malloc(strlen(split_ptr) * sizeof(char*));
+        // copy it from the token
+        strcpy(*word_list, split_ptr);
+
+        split_ptr = strtok(NULL, delim);
+        ++word_size;
+        ++word_list; // increment the list ptr so next iteration we're looking at next index
+    }
+    
+    return word_size;
 }

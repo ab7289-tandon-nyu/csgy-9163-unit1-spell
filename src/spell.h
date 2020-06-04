@@ -109,4 +109,21 @@ int hash_function(const char* word);
  **/
 bool lower_case(char * l_word, const char * word);
 
+/**
+ * Returns an array of strings and a length
+ * */
+/**
+ * Inputs:
+ *  line:           the line to be split
+ *  word_list:      the array to fill with the words
+ *  len:            the length of the passed in array
+ * 
+ * Returns:
+ *  int:            the number of words in the returned list
+ * 
+ * Modifies:
+ *  word_list:      word_list should be filled with the split words
+ **/
+int split_line(const char * line, char ** word_list, int len);
+
 #endif /* dictionary_h */
