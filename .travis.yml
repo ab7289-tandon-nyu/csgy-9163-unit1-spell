@@ -3,7 +3,7 @@ os:
  - linux
 dist: xenial
 
-compiler: gcc
+compiler: clang
 
 install:
   - sudo apt-get update
