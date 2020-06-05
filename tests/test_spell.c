@@ -221,6 +221,28 @@ START_TEST (test_split_line_multi_spaces) {
 
 // end split_line test cases
 
+// start remove_punc tests
+
+START_TEST(test_remove_punc_one) {
+
+    char * word = "...wo!!r?d..";
+    char dest[strlen(word)];
+    remove_punc(word, dest);
+    ck_assert(strcmp(dest, "word") == 0);
+
+} END_TEST
+
+START_TEST(test_remove_punc_two) {
+
+    char * word = "{w}()o{?}r!!d";
+    char dest[strlen(word)];
+    remove_punc(word, dest);
+    ck_assert(strcmp(dest, "word") == 0);
+
+} END_TEST
+
+// end remove_punc tests
+
 Suite * check_dictionary_suite(void) {
     Suite * suite;
     TCase * check_dictionary_case;
@@ -228,6 +250,7 @@ Suite * check_dictionary_suite(void) {
     TCase * check_word_case;
     TCase * check_lower_case;
     TCase * check_split_line_case;
+    TCase * check_remove_punc_case;
 
     suite = suite_create("check_dictionary");
 
@@ -260,6 +283,11 @@ Suite * check_dictionary_suite(void) {
     tcase_add_test(check_split_line_case, test_split_line_multi_spaces);
     suite_add_tcase(suite, check_split_line_case);
 
+    check_remove_punc_case = tcase_create("Remove Punctuation");
+    tcase_add_test(check_remove_punc_case, test_remove_punc_one);
+    tcase_add_test(check_remove_punc_case, test_remove_punc_two);
+    suite_add_tcase(suite, check_remove_punc_case);
+
 
     return suite;
 }
@@ -273,7 +301,7 @@ int main(void) {
     runner = srunner_create(suite);
     srunner_set_log(runner, "test.log");
     // uncomment the next line if debugging
-    // srunner_set_fork_status(runner, CK_NOFORK);
+    srunner_set_fork_status(runner, CK_NOFORK);
     srunner_run_all(runner, CK_NORMAL);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);

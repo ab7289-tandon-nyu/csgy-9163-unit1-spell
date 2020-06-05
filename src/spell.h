@@ -126,4 +126,17 @@ bool lower_case(char * l_word, const char * word);
  **/
 int split_line(const char * line, char ** word_list, int len);
 
+/**
+ * Removes all the punctionation marks from a word'
+ * */
+/**
+ * Inputs:
+ *  word:           the word to have punctuation stripped
+ *  dest:           the word to be filled in
+ * 
+ * Modifies:
+ *  dest:           word less punctuation
+ * */
+void remove_punc(const char * word, char * dest);
+
 #endif /* dictionary_h */

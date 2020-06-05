@@ -191,13 +191,18 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
 
     while ((read = getline(&line, &len, fp)) != -1) {
         // split line on spaces
+        int len = 32;
+        char * word_list[len];
+        int count = split_line(line, word_list, len);
 
         //for each word in line
+        for (int i = 0; i < count; ++i) {
             //remove punctuation
             //check_word
                 //if not check word
                 //append to mispelled
                 //incrememnt misspelled
+        }
     }
 
     return num_misspelled;
@@ -273,4 +278,25 @@ int split_line(const char * line, char ** word_list, int list_length) {
     }
     
     return word_size;
+}
+
+// removes punctuation marks from a word
+// assumes that the word is not an empty string
+void remove_punc(const char * word, char * dest) {
+    char punc[] = { ',', '!', '.', '?', ';', ':', '-', '{', '}', '[', ']', '(', ')', '\'', '"', NULL};
+    int len = strlen(word);
+
+    for ( ; *word; ++word) {
+        bool is_punc = true;
+        for (int i = 0; punc[i]; ++i) {
+            if (*word == punc[i]) {
+                is_punc = false;
+                break;
+            }
+        }
+        if (is_punc) {
+            *dest++ = *word;
+        }
+    }
+    *dest = 0;
 }
