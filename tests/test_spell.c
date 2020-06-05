@@ -42,6 +42,18 @@ START_TEST(test_dictionary_normal)
     test_val = "test";
     //hash = hash_function(test_val);
     ck_assert(check_bucket(hashtable, test_val));
+
+    // for (int i = 0; i < HASH_SIZE; ++i) {
+    //     hashmap_t map = hashtable[i];
+    //     while (map != NULL && map->next != NULL) {
+    //         hashmap_t temp = map;
+    //         map = map->next;
+    //         free(temp);
+    //     }
+    //     if (map != NULL) {
+    //         free(map);
+    //     }
+    // }
 }
 END_TEST
 
@@ -58,16 +70,39 @@ START_TEST(test_dictionary_one_bucket)
         "Corinth",
         "Grumman",
         "gribble",
-        NULL
-    };
+        NULL};
 
-    for (int i = 0; test_vals[i]; ++i)
-    {
-        int hash = hash_function(test_vals[i]);
-        printf("%s hash %d \n", test_vals[i], hash);
-        //ck_assert(check_bucket(hashtable[hash], test_vals[i]));
-        ck_assert(check_word(test_vals[i], hashtable));
-    }
+    //     for (int i = 0; test_vals[i]; ++i)
+    //     {
+    //         int hash = hash_function(test_vals[i]);
+    //         printf("%s hash %d \n", test_vals[i], hash);
+    //         //ck_assert(check_bucket(hashtable[hash], test_vals[i]));
+    //         ck_assert(check_word(test_vals[i], hashtable));
+    //     }
+    int hash = hash_function(test_vals[0]);
+    printf("%s hash %d \n", test_vals[0], hash);
+    ck_assert(check_bucket(hashtable, test_vals[0]));
+    ck_assert(check_word(test_vals[0], hashtable));
+
+    hash = hash_function(test_vals[1]);
+    printf("%s hash %d \n", test_vals[1], hash);
+    ck_assert(check_bucket(hashtable, test_vals[1]));
+    ck_assert(check_word(test_vals[1], hashtable));
+
+    hash = hash_function(test_vals[2]);
+    printf("%s hash %d \n", test_vals[2], hash);
+    ck_assert(check_bucket(hashtable, test_vals[2]));
+    ck_assert(check_word(test_vals[2], hashtable));
+
+    hash = hash_function(test_vals[3]);
+    printf("%s hash %d \n", test_vals[3], hash);
+    ck_assert(check_bucket(hashtable, test_vals[3]));
+    ck_assert(check_word(test_vals[3], hashtable));
+
+    hash = hash_function(test_vals[4]);
+    printf("%s hash %d \n", test_vals[4], hash);
+    ck_assert(check_bucket(hashtable, test_vals[4]));
+    ck_assert(check_word(test_vals[4], hashtable));
 }
 END_TEST
 
@@ -373,7 +408,7 @@ int main(void) {
     runner = srunner_create(suite);
     srunner_set_log(runner, "test.log");
     // uncomment the next line if debugging
-    // srunner_set_fork_status(runner, CK_NOFORK);
+    srunner_set_fork_status(runner, CK_NOFORK);
     srunner_run_all(runner, CK_VERBOSE);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);

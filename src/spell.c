@@ -72,6 +72,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
         // printf("read word %s\n", line);
         if (read <= LENGTH) {
             hashmap_t new_node = (hashmap_t) malloc(sizeof(hashmap_t));
+            //hashmap_t new_node = malloc(sizeof(hashmap_t));
             new_node->next = NULL;
             strcpy(new_node->word, line);
 
@@ -143,11 +144,13 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     }
 
     int bucket = hash_function(word);
-    hashmap_t cursor = NULL;
+    //hashmap_t cursor = NULL;
+    hashmap_t cursor = hashtable[bucket];
     // move the cursor along the hashtable
     // not sure why but the array syntax[] doesn't seem
     // to work here
-    cursor = hashtable[bucket];
+    //cursor = hashtable[bucket];
+    //cursor = *(hashtable + bucket);
     // for (int i = 0; i < bucket; i++) {
     //     hashtable++;
     // }
@@ -172,8 +175,11 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     // for (int i = 0; i < bucket; i++) {
     //     hashtable++;
     // }
-    // cursor = *hashtable;
+    //cursor = *hashtable;
+    //hashmap_t cursor2 = NULL;
+    //cursor2 = hashtable[bucket];
     cursor = hashtable[bucket];
+    //cursor = *(hashtable + bucket);
 
     while (cursor != NULL) {
         if (strcmp(l_word, cursor->word) == 0) {
@@ -301,6 +307,7 @@ int split_line(const char * line, char ** word_list, int list_length) {
     while (split_ptr != NULL && word_size < list_length) {
         // allocate space for the new word
         *word_list = (char *) malloc(strlen(split_ptr) * sizeof(char*));
+        //*word_list = malloc(strlen(split_ptr) * sizeof(char*));
         // copy it from the token
         strcpy(*word_list, split_ptr);
 
