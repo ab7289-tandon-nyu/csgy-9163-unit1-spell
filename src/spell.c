@@ -76,15 +76,36 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
             strcpy(new_node->word, line);
 
             //TODO need to remove line breaks
+            int len = strlen(new_node->word);
+            for (int i = len - 1; i >= 0; --i) {
+                if (new_node->word[i] == '\n') {
+                    new_node->word[i] = 0;
+                }
+            }
+
+            if (strcmp(new_node->word, "Justice") == 0 || 
+            strcmp(new_node->word, "lasagna") == 0 ||
+            strcmp(new_node->word, "creased") == 0 || 
+            strcmp(new_node->word, "Corinth") == 0 || 
+            strcmp(new_node->word, "Grumman") == 0|| 
+            strcmp(new_node->word, "gribble") == 0) {
+                printf("found %s \n", new_node->word);
+            }
             
             // printf("\tcopied word is: %s\n", new_node->word);
-            int bucket = hash_function(line);
+            int bucket = hash_function(new_node->word);
 
             if (hashtable[bucket] == NULL) {
                 hashtable[bucket] = new_node;
             } else {
                 new_node->next = hashtable[bucket];
                 hashtable[bucket] = new_node;
+                // hashmap_t node = NULL;
+                // node = hashtable[bucket];
+                // while (node->next != NULL) {
+                //     node = node->next;
+                // }
+                // node->next = new_node;
             }
         } else {
             printf("word was too big %s", line);
@@ -122,16 +143,19 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     }
 
     int bucket = hash_function(word);
-    hashmap_t cursor;
+    hashmap_t cursor = NULL;
     // move the cursor along the hashtable
-    for (int i = 0; i < bucket; i++) {
-        hashtable++;
-    }
-    cursor = *hashtable;
-    // move the cursor back, not sure if this is necessary but the tests pass
-    for (int i = 0; i < bucket; i++) {
-        hashtable--;
-    }
+    // not sure why but the array syntax[] doesn't seem
+    // to work here
+    cursor = hashtable[bucket];
+    // for (int i = 0; i < bucket; i++) {
+    //     hashtable++;
+    // }
+    // cursor = *hashtable;
+    // // move the cursor back, not sure if this is necessary but the tests pass
+    // for (int i = 0; i < bucket; i++) {
+    //     hashtable--;
+    // }
 
     while (cursor != NULL && cursor->word != NULL) {
         if (strcmp(word, cursor->word) == 0) {
@@ -145,10 +169,11 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     lower_case(l_word, word); 
 
     bucket = hash_function(l_word);
-    for (int i = 0; i < bucket; i++) {
-        hashtable++;
-    }
-    cursor = *hashtable;
+    // for (int i = 0; i < bucket; i++) {
+    //     hashtable++;
+    // }
+    // cursor = *hashtable;
+    cursor = hashtable[bucket];
 
     while (cursor != NULL) {
         if (strcmp(l_word, cursor->word) == 0) {

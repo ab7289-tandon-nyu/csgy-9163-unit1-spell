@@ -18,7 +18,7 @@
 
 // TODO add tests
 
-bool check_bucket(hashmap_t map, char * test_val);
+bool check_bucket(hashmap_t hashtable[], char * test_val);
 
 
 // start dictionary load test cases
@@ -28,21 +28,46 @@ START_TEST(test_dictionary_normal)
     ck_assert(load_dictionary(TESTDICT, hashtable));
     // check buckets
 
-    char * test_val = "first\n";
-    int hash = hash_function(test_val);
-    ck_assert(check_bucket(hashtable[hash], test_val));
+    char * test_val = "first";
+    ck_assert(check_bucket(hashtable, test_val));
     
-    test_val = "second\n";
-    hash = hash_function(test_val);
-    ck_assert(check_bucket(hashtable[hash], test_val));
+    test_val = "second";
+    // hash = hash_function(test_val);
+    ck_assert(check_bucket(hashtable, test_val));
 
-    test_val = "third\n";
-    hash = hash_function(test_val);
-    ck_assert(check_bucket(hashtable[hash], test_val));
+    test_val = "third";
+    //hash = hash_function(test_val);
+    ck_assert(check_bucket(hashtable, test_val));
 
-    test_val = "test\n";
-    hash = hash_function(test_val);
-    ck_assert(check_bucket(hashtable[hash], test_val));
+    test_val = "test";
+    //hash = hash_function(test_val);
+    ck_assert(check_bucket(hashtable, test_val));
+}
+END_TEST
+
+START_TEST(test_dictionary_one_bucket)
+{
+
+    hashmap_t hashtable[HASH_SIZE];
+    ck_assert(load_dictionary("../res/one_bucket.txt", hashtable));
+
+    char *test_vals[] = {
+        "Justice",
+        "lasagna",
+        "creased",
+        "Corinth",
+        "Grumman",
+        "gribble",
+        NULL
+    };
+
+    for (int i = 0; test_vals[i]; ++i)
+    {
+        int hash = hash_function(test_vals[i]);
+        printf("%s hash %d \n", test_vals[i], hash);
+        //ck_assert(check_bucket(hashtable[hash], test_vals[i]));
+        ck_assert(check_word(test_vals[i], hashtable));
+    }
 }
 END_TEST
 
@@ -91,13 +116,13 @@ START_TEST(test_check_word) {
     hashmap_t hashtable[HASH_SIZE];
     load_dictionary(TESTDICT, hashtable);
 
-    const char * w = "first\n";
+    const char * w = "first";
     ck_assert(check_word(w, hashtable));
 
-    const char * word = "FIRST\n";
+    const char * word = "FIRST";
     ck_assert(check_word(word, hashtable));
 
-    const char * word1 = "sEconD\n";
+    const char * word1 = "sEconD";
     ck_assert(check_word(word1, hashtable));
 
     const char * word_invalid = "nOt HeRe";
@@ -303,6 +328,7 @@ Suite * check_dictionary_suite(void) {
     tcase_add_test(check_dictionary_input_case, test_dictionary_bad_hashtable);
     tcase_add_test(check_dictionary_input_case, test_dictionary_empty_filename);
     tcase_add_test(check_dictionary_input_case, test_dictionary_null_hashtable);
+    tcase_add_test(check_dictionary_input_case, test_dictionary_one_bucket);
     suite_add_tcase(suite, check_dictionary_input_case);
 
     check_word_case = tcase_create("Check Word");
@@ -348,22 +374,26 @@ int main(void) {
     srunner_set_log(runner, "test.log");
     // uncomment the next line if debugging
     // srunner_set_fork_status(runner, CK_NOFORK);
-    srunner_run_all(runner, CK_NORMAL);
+    srunner_run_all(runner, CK_VERBOSE);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);
 
     return (failed == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
-bool check_bucket(hashmap_t map, char * test_val) {
-    while (map->next != NULL && strcmp(test_val, map->word) != 0) {
+bool check_bucket(hashmap_t hashtable[], char *test_val)
+{
+    hashmap_t map = hashtable[hash_function(test_val)];
+    while (map != NULL && 
+           map->next != NULL &&
+           map->word != NULL &&
+           strcmp(test_val, map->word) != 0)
+    {
         map = map->next;
     }
-    
+    if (map->word == NULL)
+    {
+        return false;
+    }
     return (strcmp(test_val, map->word) == 0);
 }
-
-
-
-
-
