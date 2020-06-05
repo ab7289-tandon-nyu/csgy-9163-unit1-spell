@@ -74,6 +74,8 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
             hashmap_t new_node = (hashmap_t) malloc(sizeof(hashmap_t));
             new_node->next = NULL;
             strcpy(new_node->word, line);
+
+            //TODO need to remove line breaks
             
             // printf("\tcopied word is: %s\n", new_node->word);
             int bucket = hash_function(line);
@@ -131,7 +133,7 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
         hashtable--;
     }
 
-    while (cursor != NULL) {
+    while (cursor != NULL && cursor->word != NULL) {
         if (strcmp(word, cursor->word) == 0) {
             return true;
         }
@@ -197,11 +199,16 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
 
         //for each word in line
         for (int i = 0; i < count; ++i) {
+            char dest[strlen(word_list[i])];
             //remove punctuation
-            //check_word
+            remove_punc(word_list[i], dest);
                 //if not check word
+            if (!check_word(dest, hashtable)) {
                 //append to mispelled
-                //incrememnt misspelled
+                strcpy(*misspelled++, dest);
+                // increment num_mispelled
+                ++num_misspelled;
+            }
         }
     }
 

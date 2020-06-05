@@ -14,6 +14,7 @@
 
 #define DICTIONARY "../res/wordlist.txt"
 #define TESTDICT "../res/test_wordlist.txt"
+#define TESTWORDS "../res/test1.txt"
 
 // TODO add tests
 
@@ -103,7 +104,46 @@ START_TEST(test_check_word) {
     ck_assert(!check_word(word_invalid, hashtable));
 
 } END_TEST
+
+START_TEST(test_check_word_normal) {
+
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(DICTIONARY, hashtable);
+    const char* correct_word = "Justice";
+    const char* punctuation_word_2 = "pl.ace";
+    ck_assert(check_word(correct_word, hashtable));
+    ck_assert(!check_word(punctuation_word_2, hashtable));
+    // Test here: What if a word begins and ends with "?
+
+} END_TEST
+
 //end check word_test cases
+
+// start check_words test case
+
+START_TEST(test_check_words_normal) {
+
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(DICTIONARY, hashtable);
+    char* expected[3];
+    expected[0] = "sogn";
+    expected[1] = "skyn";
+    expected[2] = "betta";
+    char *misspelled[MAX_MISSPELLED];
+    FILE *fp = fopen(TESTWORDS, "r");
+    int num_misspelled = check_words(fp, hashtable, misspelled);
+    ck_assert(num_misspelled == 3);
+    bool test = strlen(misspelled[0]) == strlen(expected[0]);
+    int len1 = strlen(misspelled[0]);
+    int len2 = strlen(expected[0]);
+    ck_assert_msg(test, "%d!=%d", len1, len2);
+    ck_assert_msg(strcmp(misspelled[0], expected[0]) == 0);
+    ck_assert_msg(strcmp(misspelled[1], expected[1]) == 0);
+    ck_assert_msg(strcmp(misspelled[2], expected[2]) == 0);
+
+} END_TEST
+
+// end check_words test case
 
 // start lower_case test cases
 
@@ -248,6 +288,7 @@ Suite * check_dictionary_suite(void) {
     TCase * check_dictionary_case;
     TCase * check_dictionary_input_case;
     TCase * check_word_case;
+    TCase * check_words_case;
     TCase * check_lower_case;
     TCase * check_split_line_case;
     TCase * check_remove_punc_case;
@@ -268,7 +309,12 @@ Suite * check_dictionary_suite(void) {
     tcase_add_test(check_word_case, test_check_word_empty_word);
     tcase_add_test(check_word_case, test_check_word_empty_table);
     tcase_add_test(check_word_case, test_check_word);
+    tcase_add_test(check_word_case, test_check_word_normal);
     suite_add_tcase(suite, check_word_case);
+
+    check_words_case = tcase_create("Check Words");
+    tcase_add_test(check_words_case, test_check_words_normal);
+    suite_add_tcase(suite, check_words_case);
 
     check_lower_case = tcase_create("Lower Case");
     tcase_add_test(check_lower_case, test_lower_null_l_word);
@@ -301,7 +347,7 @@ int main(void) {
     runner = srunner_create(suite);
     srunner_set_log(runner, "test.log");
     // uncomment the next line if debugging
-    srunner_set_fork_status(runner, CK_NOFORK);
+    // srunner_set_fork_status(runner, CK_NOFORK);
     srunner_run_all(runner, CK_NORMAL);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);
