@@ -228,10 +228,19 @@ START_TEST(test_split_line_empty) {
     char * line = "";
     int len = 32;
     char * word_list[len];
-    int count = split_line(line, word_list, len);
+    for (int i = 0; i < len; ++i) {
+        word_list[i] = NULL;
+    }
+    int count = split_line(line, &word_list, len);
     bool count_correct = count == 0;
     
     ck_assert(count_correct);
+    // make sure to free the memory we alloc'd for word list
+    for (int i = 0; i < len; ++i) {
+        if (word_list[i] != NULL) {
+            free(word_list[i]);
+        }
+    }
 
 } END_TEST
 
@@ -240,7 +249,10 @@ START_TEST(test_split_line_single) {
     char * line = "hello";
     int len = 32;
     char * word_list[len];
-    int count = split_line(line, word_list, len);
+    for (int i = 0; i < len; ++i) {
+        word_list[i] = NULL;
+    }
+    int count = split_line(line, &word_list, len);
     
     bool count_correct = count == 1;
     bool word_correct = (strcmp(*word_list, "hello") == 0);
@@ -259,7 +271,10 @@ START_TEST(test_split_line_multiple) {
     char * line = "hello world";
     int len = 32;
     char * word_list[len];
-    int count = split_line(line, word_list, len);
+    for (int i = 0; i < len; ++i) {
+        word_list[i] = NULL;
+    }
+    int count = split_line(line, &word_list, len);
     bool count_correct = count == 2;
 
     char * answers[] = { "hello","world" };
@@ -286,7 +301,10 @@ START_TEST (test_split_line_multi_spaces) {
     char * line = " hello  world   mate ";
     int len = 32;
     char * word_list[len];
-    int count = split_line(line, word_list, len);
+    for (int i = 0; i < len; ++i) {
+        word_list[i] = NULL;
+    }
+    int count = split_line(line, &word_list, len);
     bool count_correct = count == 3;
 
     char * answers[] = { "hello", "world", "mate" };
@@ -397,7 +415,7 @@ int main(void) {
     runner = srunner_create(suite);
     srunner_set_log(runner, "test.log");
     // uncomment the next line if debugging
-    // srunner_set_fork_status(runner, CK_NOFORK);
+    srunner_set_fork_status(runner, CK_NOFORK);
     srunner_run_all(runner, CK_VERBOSE);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);
