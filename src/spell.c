@@ -191,9 +191,9 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
 
     while ((read = getline(&line, &len, fp)) != -1) {
         // split line on spaces
-        int len = 32;
-        char * word_list[len];
-        for (int i = 0; i < len; ++i) {
+        int length = 32;
+        char * word_list[length];
+        for (int i = 0; i < length; ++i) {
             word_list[i] = NULL;
         }
         int count = split_line(line, &word_list, len);
@@ -208,7 +208,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
             //remove punctuation
             remove_punc(word_list[i], &dest);
                 //if not check word
-            if (!check_word(dest, &hashtable)) {
+            if (!check_word(dest, hashtable)) {
                 //append to mispelled
                 *misspelled++ = strdup(dest);
                 // increment num_mispelled
@@ -216,7 +216,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
             }
         }
         // make sure to free the memory we alloc'd for word list
-        for (int i = 0; i < len; ++i) {
+        for (int i = 0; i < length; ++i) {
             if (word_list[i] != NULL) {
                 free(word_list[i]);
             }
@@ -282,12 +282,21 @@ int split_line(const char * line, char ** word_list, int list_length) {
     // the original
     strcpy(temp_str, line);
 
+    // remove line breaks
+    int temp_len = strlen(temp_str);
+    for (int i = temp_len - 1; i >= 0; --i) {
+        if (temp_str[i] == '\n') {
+            temp_str[i] = 0;
+        }
+    }
+
     // get the pointer to the first token
     char * split_ptr = strtok(temp_str, delim);
     while (split_ptr != NULL && word_size < list_length) {
         // allocate space for the new word
         //*word_list = (char *) malloc(strlen(split_ptr) * sizeof(char*));
         // again, don't know why the below line works better than the previous but it does
+        // the previous line led to writes that sometimes went beyond the end of the heap
         *word_list = malloc(strlen(split_ptr) * sizeof(*word_list));
         
         // copy it from the token
