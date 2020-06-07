@@ -39,6 +39,7 @@ set(TEST_SRC_DIR ${PROJECT_SOURCE_DIR}/tests)
 ###############################################################################
 # Set build features
 set(CMAKE_BUILD_TYPE Debug)
+# set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 ###############################################################################
 include(CheckCSourceCompiles)

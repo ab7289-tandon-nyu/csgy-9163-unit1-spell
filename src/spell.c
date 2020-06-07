@@ -68,29 +68,23 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
         return false;
     }
 
+    int iter = 0;
     while ((read = getline(&line, &len, fptr)) != -1) {
         // printf("read word %s\n", line);
         if (read <= LENGTH) {
-            hashmap_t new_node = (hashmap_t) malloc(sizeof(hashmap_t));
-            //hashmap_t new_node = malloc(sizeof(hashmap_t));
+            //printf("Iteration %d, creating node for: %s \n", ++iter, line);
+            
+            //hashmap_t new_node = (hashmap_t) malloc(sizeof(hashmap_t));
+            // i don't know why this words vs the previous but it does
+            hashmap_t new_node = malloc(sizeof(*new_node));
             new_node->next = NULL;
             strcpy(new_node->word, line);
 
-            //TODO need to remove line breaks
             int len = strlen(new_node->word);
             for (int i = len - 1; i >= 0; --i) {
                 if (new_node->word[i] == '\n') {
                     new_node->word[i] = 0;
                 }
-            }
-
-            if (strcmp(new_node->word, "Justice") == 0 || 
-            strcmp(new_node->word, "lasagna") == 0 ||
-            strcmp(new_node->word, "creased") == 0 || 
-            strcmp(new_node->word, "Corinth") == 0 || 
-            strcmp(new_node->word, "Grumman") == 0|| 
-            strcmp(new_node->word, "gribble") == 0) {
-                printf("found %s \n", new_node->word);
             }
             
             // printf("\tcopied word is: %s\n", new_node->word);
@@ -101,12 +95,6 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
             } else {
                 new_node->next = hashtable[bucket];
                 hashtable[bucket] = new_node;
-                // hashmap_t node = NULL;
-                // node = hashtable[bucket];
-                // while (node->next != NULL) {
-                //     node = node->next;
-                // }
-                // node->next = new_node;
             }
         } else {
             printf("word was too big %s", line);
@@ -144,21 +132,7 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     }
 
     int bucket = hash_function(word);
-    //hashmap_t cursor = NULL;
     hashmap_t cursor = hashtable[bucket];
-    // move the cursor along the hashtable
-    // not sure why but the array syntax[] doesn't seem
-    // to work here
-    //cursor = hashtable[bucket];
-    //cursor = *(hashtable + bucket);
-    // for (int i = 0; i < bucket; i++) {
-    //     hashtable++;
-    // }
-    // cursor = *hashtable;
-    // // move the cursor back, not sure if this is necessary but the tests pass
-    // for (int i = 0; i < bucket; i++) {
-    //     hashtable--;
-    // }
 
     while (cursor != NULL && cursor->word != NULL) {
         if (strcmp(word, cursor->word) == 0) {
@@ -169,17 +143,10 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     
     // set word to lowercase
     char l_word[LENGTH + 1];
-    lower_case(l_word, word); 
+    lower_case(&l_word, word); 
 
     bucket = hash_function(l_word);
-    // for (int i = 0; i < bucket; i++) {
-    //     hashtable++;
-    // }
-    //cursor = *hashtable;
-    //hashmap_t cursor2 = NULL;
-    //cursor2 = hashtable[bucket];
     cursor = hashtable[bucket];
-    //cursor = *(hashtable + bucket);
 
     while (cursor != NULL) {
         if (strcmp(l_word, cursor->word) == 0) {
@@ -226,19 +193,32 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
         // split line on spaces
         int len = 32;
         char * word_list[len];
-        int count = split_line(line, word_list, len);
+        for (int i = 0; i < len; ++i) {
+            word_list[i] = NULL;
+        }
+        int count = split_line(line, &word_list, len);
 
         //for each word in line
         for (int i = 0; i < count; ++i) {
-            char dest[strlen(word_list[i])];
+            int dest_len = strlen(word_list[i]) + 1;
+            char dest[dest_len];
+            for (int i = 0; i < dest_len; ++i) {
+                dest[i] = NULL;
+            }
             //remove punctuation
-            remove_punc(word_list[i], dest);
+            remove_punc(word_list[i], &dest);
                 //if not check word
-            if (!check_word(dest, hashtable)) {
+            if (!check_word(dest, &hashtable)) {
                 //append to mispelled
-                strcpy(*misspelled++, dest);
+                *misspelled++ = strdup(dest);
                 // increment num_mispelled
                 ++num_misspelled;
+            }
+        }
+        // make sure to free the memory we alloc'd for word list
+        for (int i = 0; i < len; ++i) {
+            if (word_list[i] != NULL) {
+                free(word_list[i]);
             }
         }
     }
@@ -272,7 +252,7 @@ bool lower_case(char * l_word, const char * word) {
     }
 
     for (int i = 0; word[i]; ++i) {
-        l_word[i] = tolower(word[i]);
+        l_word[i] = (char) tolower(word[i]);
     }
     return true;
 }
@@ -306,8 +286,10 @@ int split_line(const char * line, char ** word_list, int list_length) {
     char * split_ptr = strtok(temp_str, delim);
     while (split_ptr != NULL && word_size < list_length) {
         // allocate space for the new word
-        *word_list = (char *) malloc(strlen(split_ptr) * sizeof(char*));
-        //*word_list = malloc(strlen(split_ptr) * sizeof(char*));
+        //*word_list = (char *) malloc(strlen(split_ptr) * sizeof(char*));
+        // again, don't know why the below line works better than the previous but it does
+        *word_list = malloc(strlen(split_ptr) * sizeof(*word_list));
+        
         // copy it from the token
         strcpy(*word_list, split_ptr);
 
@@ -338,4 +320,18 @@ void remove_punc(const char * word, char * dest) {
         }
     }
     *dest = 0;
+}
+
+void free_dictionary(hashmap_t hashtable[]) {
+    for (int i = 0; i < HASH_SIZE; ++i) {
+        if (hashtable[i] != NULL) {
+            hashmap_t node = hashtable[i];
+            while (node != NULL) {
+                hashmap_t temp = node;
+                node = node->next;
+                free(temp);
+                temp = NULL;
+            }
+        }
+    }
 }

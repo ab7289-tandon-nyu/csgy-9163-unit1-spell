@@ -139,4 +139,9 @@ int split_line(const char * line, char ** word_list, int len);
  * */
 void remove_punc(const char * word, char * dest);
 
+/**
+ * Convenience function to free the dictionary after we're all done
+ * */
+void free_dictionary(hashmap_t hashtable[]);
+
 #endif /* dictionary_h */

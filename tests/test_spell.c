@@ -25,35 +25,25 @@ bool check_bucket(hashmap_t hashtable[], char * test_val);
 START_TEST(test_dictionary_normal)
 {
     hashmap_t hashtable[HASH_SIZE];
-    ck_assert(load_dictionary(TESTDICT, hashtable));
+    ck_assert(load_dictionary(TESTDICT, &hashtable));
     // check buckets
 
     char * test_val = "first";
-    ck_assert(check_bucket(hashtable, test_val));
+    ck_assert(check_bucket(&hashtable, test_val));
     
     test_val = "second";
     // hash = hash_function(test_val);
-    ck_assert(check_bucket(hashtable, test_val));
+    ck_assert(check_bucket(&hashtable, test_val));
 
     test_val = "third";
     //hash = hash_function(test_val);
-    ck_assert(check_bucket(hashtable, test_val));
+    ck_assert(check_bucket(&hashtable, test_val));
 
     test_val = "test";
     //hash = hash_function(test_val);
-    ck_assert(check_bucket(hashtable, test_val));
+    ck_assert(check_bucket(&hashtable, test_val));
 
-    // for (int i = 0; i < HASH_SIZE; ++i) {
-    //     hashmap_t map = hashtable[i];
-    //     while (map != NULL && map->next != NULL) {
-    //         hashmap_t temp = map;
-    //         map = map->next;
-    //         free(temp);
-    //     }
-    //     if (map != NULL) {
-    //         free(map);
-    //     }
-    // }
+    free_dictionary(&hashtable);
 }
 END_TEST
 
@@ -61,7 +51,7 @@ START_TEST(test_dictionary_one_bucket)
 {
 
     hashmap_t hashtable[HASH_SIZE];
-    ck_assert(load_dictionary("../res/one_bucket.txt", hashtable));
+    ck_assert(load_dictionary("../res/one_bucket.txt", &hashtable));
 
     char *test_vals[] = {
         "Justice",
@@ -72,37 +62,16 @@ START_TEST(test_dictionary_one_bucket)
         "gribble",
         NULL};
 
-    //     for (int i = 0; test_vals[i]; ++i)
-    //     {
-    //         int hash = hash_function(test_vals[i]);
-    //         printf("%s hash %d \n", test_vals[i], hash);
-    //         //ck_assert(check_bucket(hashtable[hash], test_vals[i]));
-    //         ck_assert(check_word(test_vals[i], hashtable));
-    //     }
-    int hash = hash_function(test_vals[0]);
-    printf("%s hash %d \n", test_vals[0], hash);
-    ck_assert(check_bucket(hashtable, test_vals[0]));
-    ck_assert(check_word(test_vals[0], hashtable));
-
-    hash = hash_function(test_vals[1]);
-    printf("%s hash %d \n", test_vals[1], hash);
-    ck_assert(check_bucket(hashtable, test_vals[1]));
-    ck_assert(check_word(test_vals[1], hashtable));
-
-    hash = hash_function(test_vals[2]);
-    printf("%s hash %d \n", test_vals[2], hash);
-    ck_assert(check_bucket(hashtable, test_vals[2]));
-    ck_assert(check_word(test_vals[2], hashtable));
-
-    hash = hash_function(test_vals[3]);
-    printf("%s hash %d \n", test_vals[3], hash);
-    ck_assert(check_bucket(hashtable, test_vals[3]));
-    ck_assert(check_word(test_vals[3], hashtable));
-
-    hash = hash_function(test_vals[4]);
-    printf("%s hash %d \n", test_vals[4], hash);
-    ck_assert(check_bucket(hashtable, test_vals[4]));
-    ck_assert(check_word(test_vals[4], hashtable));
+        for (int i = 0; test_vals[i]; ++i)
+        {
+            int hash = hash_function(test_vals[i]);
+            printf("%s hash %d \n", test_vals[i], hash);
+            // ck_assert(check_bucket(hashtable[hash], test_vals[i]));
+            ck_assert(check_bucket(&hashtable, test_vals[i]));
+            ck_assert(check_word(test_vals[i], &hashtable));
+        }
+    
+    free_dictionary(&hashtable);
 }
 END_TEST
 
@@ -122,7 +91,9 @@ START_TEST(test_dictionary_null_hashtable) {
 START_TEST(test_dictionary_empty_filename) {
     
     hashmap_t hashtable[HASH_SIZE];
-    ck_assert(!load_dictionary("bad_file.txt", hashtable));
+    ck_assert(!load_dictionary("bad_file.txt", &hashtable));
+
+    free_dictionary(&hashtable);
 
 } END_TEST
 // end dictionary load test cases
@@ -131,49 +102,57 @@ START_TEST(test_dictionary_empty_filename) {
 START_TEST(test_check_word_empty_word) {
 
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(TESTDICT, hashtable);
+    load_dictionary(TESTDICT, &hashtable);
     const char * null_word = NULL;
-    ck_assert(!check_word(null_word, hashtable));
+    ck_assert(!check_word(null_word, &hashtable));
+
+    free_dictionary(&hashtable);
 
 } END_TEST
 
 START_TEST(test_check_word_empty_table) {
 
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(TESTDICT, hashtable);
+    load_dictionary(TESTDICT, &hashtable);
     const char * word = "first";
     ck_assert(!check_word(word, NULL));
+
+    free_dictionary(&hashtable);
 
 } END_TEST
 
 START_TEST(test_check_word) {
 
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(TESTDICT, hashtable);
+    load_dictionary(TESTDICT, &hashtable);
 
     const char * w = "first";
-    ck_assert(check_word(w, hashtable));
+    ck_assert(check_word(w, &hashtable));
 
     const char * word = "FIRST";
-    ck_assert(check_word(word, hashtable));
+    ck_assert(check_word(word, &hashtable));
 
     const char * word1 = "sEconD";
-    ck_assert(check_word(word1, hashtable));
+    ck_assert(check_word(word1, &hashtable));
 
     const char * word_invalid = "nOt HeRe";
-    ck_assert(!check_word(word_invalid, hashtable));
+    ck_assert(!check_word(word_invalid, &hashtable));
+
+    free_dictionary(&hashtable);
 
 } END_TEST
 
 START_TEST(test_check_word_normal) {
 
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(DICTIONARY, hashtable);
+    load_dictionary(DICTIONARY, &hashtable);
     const char* correct_word = "Justice";
     const char* punctuation_word_2 = "pl.ace";
-    ck_assert(check_word(correct_word, hashtable));
-    ck_assert(!check_word(punctuation_word_2, hashtable));
+    ck_assert(check_word(correct_word, &hashtable));
+    ck_assert(!check_word(punctuation_word_2, &hashtable));
     // Test here: What if a word begins and ends with "?
+
+    free_dictionary(&hashtable);
 
 } END_TEST
 
@@ -184,14 +163,17 @@ START_TEST(test_check_word_normal) {
 START_TEST(test_check_words_normal) {
 
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(DICTIONARY, hashtable);
+    load_dictionary(DICTIONARY, &hashtable);
     char* expected[3];
     expected[0] = "sogn";
     expected[1] = "skyn";
     expected[2] = "betta";
     char *misspelled[MAX_MISSPELLED];
+    for (int i = 0; i < MAX_MISSPELLED; ++i) {
+        misspelled[i] = NULL;
+    }
     FILE *fp = fopen(TESTWORDS, "r");
-    int num_misspelled = check_words(fp, hashtable, misspelled);
+    int num_misspelled = check_words(fp, &hashtable, &misspelled);
     ck_assert(num_misspelled == 3);
     bool test = strlen(misspelled[0]) == strlen(expected[0]);
     int len1 = strlen(misspelled[0]);
@@ -200,6 +182,13 @@ START_TEST(test_check_words_normal) {
     ck_assert_msg(strcmp(misspelled[0], expected[0]) == 0);
     ck_assert_msg(strcmp(misspelled[1], expected[1]) == 0);
     ck_assert_msg(strcmp(misspelled[2], expected[2]) == 0);
+
+    for (int i = 0; i < MAX_MISSPELLED; ++i) {
+        if (misspelled[i] != NULL) {
+            free(misspelled[i]);
+        }
+    }
+    free_dictionary(&hashtable);
 
 } END_TEST
 
@@ -408,7 +397,7 @@ int main(void) {
     runner = srunner_create(suite);
     srunner_set_log(runner, "test.log");
     // uncomment the next line if debugging
-    srunner_set_fork_status(runner, CK_NOFORK);
+    // srunner_set_fork_status(runner, CK_NOFORK);
     srunner_run_all(runner, CK_VERBOSE);
     failed = srunner_ntests_failed(runner);
     srunner_free(runner);
