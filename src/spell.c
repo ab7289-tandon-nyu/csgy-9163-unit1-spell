@@ -114,6 +114,8 @@ bool load_dictionary(const char *dictionary_file, hashmap_t hashtable[])
         }
     }
 
+    // free memory allocated by getline()
+    free(line);
     // close file
     int result = fclose(fptr);
     if (result != 0)
@@ -251,6 +253,9 @@ int check_words(FILE *fp, hashmap_t hashtable[], char *misspelled[])
             }
         }
     }
+
+    // free memory allocated by getline()
+    free(line);
 
     return num_misspelled;
 }

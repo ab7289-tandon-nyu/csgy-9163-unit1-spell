@@ -194,6 +194,8 @@ START_TEST(test_check_words_normal)
     ck_assert_msg(strcmp(misspelled[1], expected[1]) == 0);
     ck_assert_msg(strcmp(misspelled[2], expected[2]) == 0);
 
+    fclose(fp);
+
     for (int i = 0; i < MAX_MISSPELLED; ++i)
     {
         if (misspelled[i] != NULL)
