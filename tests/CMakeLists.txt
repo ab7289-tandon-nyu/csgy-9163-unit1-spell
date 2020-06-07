@@ -7,13 +7,14 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src)
 # set(CHECK_INSTALL_DIR "C:/Program Files/check")
 
 find_package(Check REQUIRED)
+find_package(Threads REQUIRED)
 include_directories(${CHECK_INCLUDE_DIRS})
 link_directories(${CHECK_LIBRARY_DIRS})
 
 set(TEST_SOURCES
-    test_main.c
+    test_spell.c
 )
 
-add_executable(test_main ${TEST_SOURCES})
-target_link_libraries(test_main dictionary ${CHECK_LIBRARIES})
+add_executable(test_spell ${TEST_SOURCES})
+target_link_libraries(test_spell spell ${CHECK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 

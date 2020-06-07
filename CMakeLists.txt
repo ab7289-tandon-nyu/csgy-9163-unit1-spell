@@ -39,6 +39,7 @@ set(TEST_SRC_DIR ${PROJECT_SOURCE_DIR}/tests)
 ###############################################################################
 # Set build features
 set(CMAKE_BUILD_TYPE Debug)
+# set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 ###############################################################################
 include(CheckCSourceCompiles)
@@ -99,10 +100,10 @@ set(CONFIG_HEADER ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 ###############################################################################
 # Subdirectories
 add_subdirectory(src)
-# add_subdirectory(tests)
+add_subdirectory(tests)
 
 ###############################################################################
 # Unit tests
 enable_testing()
-add_test(NAME test_main COMMAND test_main)
+add_test(NAME test_spell COMMAND test_spell)
 

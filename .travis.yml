@@ -3,11 +3,11 @@ os:
  - linux
 dist: xenial
 
-compiler: gcc
+compiler: clang
 
 install:
   - sudo apt-get update
-  - sudo apt-get install check build-essential pkg-config
+  - sudo apt-get install build-essential check pkg-config
 
 before_script:
   # create a build folder for the out-of-source build
@@ -21,4 +21,4 @@ before_script:
 script:
   # once CMake has done its job we just build using make as usual
   - make
-  # - make test
+  - make test

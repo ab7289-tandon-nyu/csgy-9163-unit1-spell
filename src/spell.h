@@ -1,13 +1,13 @@
 /****************************************************************************
-* dictionary.h
+* spell.h
 *
 * Application Security, Assignment 1
 *
 * Adapted from code written by Ben Halperin
 ***************************************************************************/
 
-#ifndef dictionary_h
-#define dictionary_h
+#ifndef spell_h
+#define spell_h
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -92,5 +92,56 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]);
  * Already implemented in dictionary.c
  **/
 int hash_function(const char* word);
+
+/**
+ * Returns a string as lower case
+ * */
+/**
+ * Inputs:
+ *  l_word:     the word to be populated
+ *  word:       the word to be made lower_case
+ * 
+ * Returns:
+ *  bool:      whether or not the word was made lower case
+ * 
+ * Modifies:
+ *  l_word:      l_word should be filled by the word all lower case
+ **/
+bool lower_case(char * l_word, const char * word);
+
+/**
+ * Returns an array of strings and a length
+ * */
+/**
+ * Inputs:
+ *  line:           the line to be split
+ *  word_list:      the array to fill with the words
+ *  len:            the length of the passed in array
+ * 
+ * Returns:
+ *  int:            the number of words in the returned list
+ * 
+ * Modifies:
+ *  word_list:      word_list should be filled with the split words
+ **/
+int split_line(const char * line, char ** word_list, int len);
+
+/**
+ * Removes all the punctionation marks from a word'
+ * */
+/**
+ * Inputs:
+ *  word:           the word to have punctuation stripped
+ *  dest:           the word to be filled in
+ * 
+ * Modifies:
+ *  dest:           word less punctuation
+ * */
+void remove_punc(const char * word, char * dest);
+
+/**
+ * Convenience function to free the dictionary after we're all done
+ * */
+void free_dictionary(hashmap_t hashtable[]);
 
 #endif /* dictionary_h */
