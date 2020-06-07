@@ -14,12 +14,12 @@
 #include "spell.h"
 
 // Hash table is an array of linked lists.
-node* hashtable[HASH_SIZE];
+node *hashtable[HASH_SIZE];
 
 // Maps a word to an integer value to place it in the hash table.
 // Sum the value of each character in the word, then find the
 // remainder after dividing by the size of the hash table.
-int hash_function(const char* word)
+int hash_function(const char *word)
 {
     int sum = 0;
     int word_length = strlen(word);
@@ -28,52 +28,58 @@ int hash_function(const char* word)
     {
         sum += word[i];
     }
-    
+
     int bucket = sum % HASH_SIZE;
     return bucket;
 }
 
-
-// given a dictionary file and a hashtable, load the dictionary file 
+// given a dictionary file and a hashtable, load the dictionary file
 // into the hastable
 // if successfull returns true
 // otherwise returns false
-bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
+bool load_dictionary(const char *dictionary_file, hashmap_t hashtable[])
+{
 
     // check if hashtable is null
-    if (hashtable == NULL) {
+    if (hashtable == NULL)
+    {
         // hashtable was not initialized
         return false;
     }
-    
+
     // initialize each of its values to NULL if it's valid
-    for (int i = 0; i < HASH_SIZE; i++) {
+    for (int i = 0; i < HASH_SIZE; i++)
+    {
         hashtable[i] = NULL;
     }
 
     // make sure we weren't handed an empty pointer
-    if (dictionary_file == NULL) {
+    if (dictionary_file == NULL)
+    {
         printf("dictionary_file was null");
         return false;
     }
-    
-    FILE * fptr;
-    char * line = NULL;
+
+    FILE *fptr;
+    char *line = NULL;
     size_t len = 0;
     ssize_t read;
 
     fptr = fopen(dictionary_file, "r");
-    if (fptr == NULL) {
+    if (fptr == NULL)
+    {
         printf("fptr was null");
         return false;
     }
 
     int iter = 0;
-    while ((read = getline(&line, &len, fptr)) != -1) {
+    while ((read = getline(&line, &len, fptr)) != -1)
+    {
         // printf("read word %s\n", line);
-        if (read <= LENGTH) {
+        if (read <= LENGTH)
+        {
             //printf("Iteration %d, creating node for: %s \n", ++iter, line);
-            
+
             //hashmap_t new_node = (hashmap_t) malloc(sizeof(hashmap_t));
             // i don't know why this words vs the previous but it does
             hashmap_t new_node = malloc(sizeof(*new_node));
@@ -81,29 +87,37 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
             strcpy(new_node->word, line);
 
             int len = strlen(new_node->word);
-            for (int i = len - 1; i >= 0; --i) {
-                if (new_node->word[i] == '\n') {
+            for (int i = len - 1; i >= 0; --i)
+            {
+                if (new_node->word[i] == '\n')
+                {
                     new_node->word[i] = 0;
                 }
             }
-            
+
             // printf("\tcopied word is: %s\n", new_node->word);
             int bucket = hash_function(new_node->word);
 
-            if (hashtable[bucket] == NULL) {
+            if (hashtable[bucket] == NULL)
+            {
                 hashtable[bucket] = new_node;
-            } else {
+            }
+            else
+            {
                 new_node->next = hashtable[bucket];
                 hashtable[bucket] = new_node;
             }
-        } else {
+        }
+        else
+        {
             printf("word was too big %s", line);
         }
     }
 
     // close file
     int result = fclose(fptr);
-    if (result != 0) {
+    if (result != 0)
+    {
         printf("unable to close the file");
     }
     return true;
@@ -125,31 +139,37 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]) {
  * Example:
  *  bool correct  = check_word(word, hashtable);
  **/
-bool check_word(const char* word, hashmap_t hashtable[]) {
+bool check_word(const char *word, hashmap_t hashtable[])
+{
 
-    if (word == NULL || hashtable == NULL) {
+    if (word == NULL || hashtable == NULL)
+    {
         return false;
     }
 
     int bucket = hash_function(word);
     hashmap_t cursor = hashtable[bucket];
 
-    while (cursor != NULL && cursor->word != NULL) {
-        if (strcmp(word, cursor->word) == 0) {
+    while (cursor != NULL && cursor->word != NULL)
+    {
+        if (strcmp(word, cursor->word) == 0)
+        {
             return true;
         }
         cursor = cursor->next;
     }
-    
+
     // set word to lowercase
     char l_word[LENGTH + 1];
-    lower_case(&l_word, word); 
+    lower_case(&l_word, word);
 
     bucket = hash_function(l_word);
     cursor = hashtable[bucket];
 
-    while (cursor != NULL) {
-        if (strcmp(l_word, cursor->word) == 0) {
+    while (cursor != NULL)
+    {
+        if (strcmp(l_word, cursor->word) == 0)
+        {
             return true;
         }
         cursor = cursor->next;
@@ -177,38 +197,45 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
  * Example:
  *  int num_misspelled = check_words(text_file, hashtable, misspelled);
  **/
-int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
+int check_words(FILE *fp, hashmap_t hashtable[], char *misspelled[])
+{
 
     int num_misspelled = 0;
-    char * line = NULL;
+    char *line = NULL;
     size_t len = 0;
     ssize_t read;
 
-    if (fp == NULL) {
+    if (fp == NULL)
+    {
         printf("fp was null");
         return -1;
     }
 
-    while ((read = getline(&line, &len, fp)) != -1) {
+    while ((read = getline(&line, &len, fp)) != -1)
+    {
         // split line on spaces
         int length = 32;
-        char * word_list[length];
-        for (int i = 0; i < length; ++i) {
+        char *word_list[length];
+        for (int i = 0; i < length; ++i)
+        {
             word_list[i] = NULL;
         }
         int count = split_line(line, &word_list, len);
 
         //for each word in line
-        for (int i = 0; i < count; ++i) {
+        for (int i = 0; i < count; ++i)
+        {
             int dest_len = strlen(word_list[i]) + 1;
             char dest[dest_len];
-            for (int i = 0; i < dest_len; ++i) {
+            for (int i = 0; i < dest_len; ++i)
+            {
                 dest[i] = NULL;
             }
             //remove punctuation
             remove_punc(word_list[i], &dest);
-                //if not check word
-            if (!check_word(dest, hashtable)) {
+            //if not check word
+            if (!check_word(dest, hashtable))
+            {
                 //append to mispelled
                 *misspelled++ = strdup(dest);
                 // increment num_mispelled
@@ -216,8 +243,10 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
             }
         }
         // make sure to free the memory we alloc'd for word list
-        for (int i = 0; i < length; ++i) {
-            if (word_list[i] != NULL) {
+        for (int i = 0; i < length; ++i)
+        {
+            if (word_list[i] != NULL)
+            {
                 free(word_list[i]);
             }
         }
@@ -225,7 +254,6 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
 
     return num_misspelled;
 }
-
 
 /**
  * Returns a string as lower case
@@ -241,18 +269,22 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
  * Modifies:
  *  l_word:      l_word should be filled by the word all lower case
  **/
-bool lower_case(char * l_word, const char * word) {
-    
-    if (l_word == NULL || word == NULL) {
+bool lower_case(char *l_word, const char *word)
+{
+
+    if (l_word == NULL || word == NULL)
+    {
         return false;
     }
 
-    for (int i = 0; i < LENGTH; i++) {
+    for (int i = 0; i < LENGTH; i++)
+    {
         l_word[i] = NULL;
     }
 
-    for (int i = 0; word[i]; ++i) {
-        l_word[i] = (char) tolower(word[i]);
+    for (int i = 0; word[i]; ++i)
+    {
+        l_word[i] = (char)tolower(word[i]);
     }
     return true;
 }
@@ -272,7 +304,8 @@ bool lower_case(char * l_word, const char * word) {
  * Modifies:
  *  word_list:      word_list should be filled with the split words
  **/
-int split_line(const char * line, char ** word_list, int list_length) {
+int split_line(const char *line, char **word_list, int list_length)
+{
     int word_size = 0;
     char delim[] = " ";
 
@@ -284,21 +317,24 @@ int split_line(const char * line, char ** word_list, int list_length) {
 
     // remove line breaks
     int temp_len = strlen(temp_str);
-    for (int i = temp_len - 1; i >= 0; --i) {
-        if (temp_str[i] == '\n') {
+    for (int i = temp_len - 1; i >= 0; --i)
+    {
+        if (temp_str[i] == '\n')
+        {
             temp_str[i] = 0;
         }
     }
 
     // get the pointer to the first token
-    char * split_ptr = strtok(temp_str, delim);
-    while (split_ptr != NULL && word_size < list_length) {
+    char *split_ptr = strtok(temp_str, delim);
+    while (split_ptr != NULL && word_size < list_length)
+    {
         // allocate space for the new word
         //*word_list = (char *) malloc(strlen(split_ptr) * sizeof(char*));
         // again, don't know why the below line works better than the previous but it does
         // the previous line led to writes that sometimes went beyond the end of the heap
         *word_list = malloc(strlen(split_ptr) * sizeof(*word_list));
-        
+
         // copy it from the token
         strcpy(*word_list, split_ptr);
 
@@ -306,36 +342,45 @@ int split_line(const char * line, char ** word_list, int list_length) {
         ++word_size;
         ++word_list; // increment the list ptr so next iteration we're looking at next index
     }
-    
+
     return word_size;
 }
 
 // removes punctuation marks from a word
 // assumes that the word is not an empty string
-void remove_punc(const char * word, char * dest) {
-    char punc[] = { ',', '!', '.', '?', ';', ':', '-', '{', '}', '[', ']', '(', ')', '\'', '"', NULL};
+void remove_punc(const char *word, char *dest)
+{
+    char punc[] = {',', '!', '.', '?', ';', ':', '-', '{', '}', '[', ']', '(', ')', '\'', '"', NULL};
     int len = strlen(word);
 
-    for ( ; *word; ++word) {
+    for (; *word; ++word)
+    {
         bool is_punc = true;
-        for (int i = 0; punc[i]; ++i) {
-            if (*word == punc[i]) {
+        for (int i = 0; punc[i]; ++i)
+        {
+            if (*word == punc[i])
+            {
                 is_punc = false;
                 break;
             }
         }
-        if (is_punc) {
+        if (is_punc)
+        {
             *dest++ = *word;
         }
     }
     *dest = 0;
 }
 
-void free_dictionary(hashmap_t hashtable[]) {
-    for (int i = 0; i < HASH_SIZE; ++i) {
-        if (hashtable[i] != NULL) {
+void free_dictionary(hashmap_t hashtable[])
+{
+    for (int i = 0; i < HASH_SIZE; ++i)
+    {
+        if (hashtable[i] != NULL)
+        {
             hashmap_t node = hashtable[i];
-            while (node != NULL) {
+            while (node != NULL)
+            {
                 hashmap_t temp = node;
                 node = node->next;
                 free(temp);
