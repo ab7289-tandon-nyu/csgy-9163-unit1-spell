@@ -201,6 +201,7 @@ START_TEST(test_check_words_normal)
         if (misspelled[i] != NULL)
         {
             free(misspelled[i]);
+            misspelled[i] = NULL;
         }
     }
     free_dictionary(&hashtable);
@@ -261,6 +262,7 @@ START_TEST(test_split_line_empty)
         if (word_list[i] != NULL)
         {
             free(word_list[i]);
+            word_list[i] = NULL;
         }
     }
 }
@@ -284,6 +286,7 @@ START_TEST(test_split_line_single)
     for (int i = 0; i < count; ++i)
     {
         free(word_list[i]);
+        word_list[i] = NULL;
     }
 
     ck_assert(count_correct);
@@ -319,6 +322,7 @@ START_TEST(test_split_line_multiple)
     for (int i = 0; i < count; ++i)
     {
         free(word_list[i]);
+        word_list[i] = NULL;
     }
 
     ck_assert(count_correct);
@@ -354,6 +358,7 @@ START_TEST(test_split_line_multi_spaces)
     for (int i = 0; i < count; ++i)
     {
         free(word_list[i]);
+        word_list[i] = NULL;
     }
 
     ck_assert(count_correct);

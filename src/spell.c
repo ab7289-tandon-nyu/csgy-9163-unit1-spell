@@ -116,6 +116,7 @@ bool load_dictionary(const char *dictionary_file, hashmap_t hashtable[])
 
     // free memory allocated by getline()
     free(line);
+    line = NULL;
     // close file
     int result = fclose(fptr);
     if (result != 0)
@@ -250,12 +251,14 @@ int check_words(FILE *fp, hashmap_t hashtable[], char *misspelled[])
             if (word_list[i] != NULL)
             {
                 free(word_list[i]);
+                word_list[i] = NULL;
             }
         }
     }
 
     // free memory allocated by getline()
     free(line);
+    line = NULL;
 
     return num_misspelled;
 }
