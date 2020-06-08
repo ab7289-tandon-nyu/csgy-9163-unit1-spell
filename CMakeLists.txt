@@ -39,7 +39,6 @@ set(TEST_SRC_DIR ${PROJECT_SOURCE_DIR}/tests)
 ###############################################################################
 # Set build features
 set(CMAKE_BUILD_TYPE Debug)
-# set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 ###############################################################################
 include(CheckCSourceCompiles)
@@ -50,6 +49,7 @@ include(CheckIncludeFiles)
 include(CheckLibraryExists)
 include(CheckSymbolExists)
 include(CheckTypeSize)
+include(CodeCoverage)
 
 ###############################################################################
 # Check headers
@@ -96,6 +96,11 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 add_definitions(-DHAVE_CONFIG_H)
 set(CONFIG_HEADER ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
+###############################################################################
+# Code Code
+append_coverage_compiler_flags()
+# TODO add setup_target_for_coverage_lcov() config
 
 ###############################################################################
 # Subdirectories
