@@ -98,11 +98,6 @@ add_definitions(-DHAVE_CONFIG_H)
 set(CONFIG_HEADER ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 ###############################################################################
-# Code Code
-append_coverage_compiler_flags()
-# TODO add setup_target_for_coverage_lcov() config
-
-###############################################################################
 # Subdirectories
 add_subdirectory(src)
 add_subdirectory(tests)
@@ -111,4 +106,14 @@ add_subdirectory(tests)
 # Unit tests
 enable_testing()
 add_test(NAME test_spell COMMAND test_spell)
+
+###############################################################################
+# Code Code
+append_coverage_compiler_flags()
+setup_target_for_coverage_gcovr_html(
+    NAME spell_coverage
+    EXECUTABLE ${CMAKE_BINARY_DIR}/test_spell
+    DEPENDENCIES test_spell
+    EXCLUDE ${TEST_SRC_DIR}
+)
 
