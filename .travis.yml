@@ -5,6 +5,9 @@ dist: xenial
 
 compiler: clang
 
+before_install:
+  - pip install --user cpp-coveralls
+
 install:
   - sudo apt-get update
   - sudo apt-get install build-essential check pkg-config
@@ -22,3 +25,7 @@ script:
   # once CMake has done its job we just build using make as usual
   - make
   - make test
+  - make spell_coverage
+
+after_success:
+  - coveralls --exclude lib --exclude tests --gcov-options '\-lp'
