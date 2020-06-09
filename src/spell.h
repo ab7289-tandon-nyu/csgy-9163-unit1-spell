@@ -4,6 +4,7 @@
 * Application Security, Assignment 1
 *
 * Adapted from code written by Ben Halperin
+* Implemented by Alex Biehl
 ***************************************************************************/
 
 #ifndef spell_h
