@@ -39,7 +39,6 @@ set(TEST_SRC_DIR ${PROJECT_SOURCE_DIR}/tests)
 ###############################################################################
 # Set build features
 set(CMAKE_BUILD_TYPE Debug)
-# set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 ###############################################################################
 include(CheckCSourceCompiles)
@@ -50,6 +49,7 @@ include(CheckIncludeFiles)
 include(CheckLibraryExists)
 include(CheckSymbolExists)
 include(CheckTypeSize)
+include(CodeCoverage)
 
 ###############################################################################
 # Check headers
@@ -98,6 +98,17 @@ add_definitions(-DHAVE_CONFIG_H)
 set(CONFIG_HEADER ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 ###############################################################################
+# Code Coverage
+append_coverage_compiler_flags()
+setup_target_for_coverage_gcovr_html(
+    NAME spell_coverage
+    EXECUTABLE ${CMAKE_BINARY_DIR}/test_spell
+    DEPENDENCIES test_spell
+    BASE_DIRECTORY "../"
+    EXCLUDE ${TEST_SRC_DIR}
+)
+
+###############################################################################
 # Subdirectories
 add_subdirectory(src)
 add_subdirectory(tests)
@@ -106,4 +117,6 @@ add_subdirectory(tests)
 # Unit tests
 enable_testing()
 add_test(NAME test_spell COMMAND test_spell)
+
+
 
