@@ -3,7 +3,7 @@ os:
  - linux
 dist: xenial
 
-compiler: clang
+compiler: gcc
 
 before_install:
   - pip install --user cpp-coveralls gcovr
