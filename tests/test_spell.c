@@ -407,14 +407,16 @@ START_TEST(test_spell_check_null_dictionary)
     char * words = TESTWORDS;
     char * dictionary = NULL;
     ck_assert(spell_check(words, dictionary) == 1);
-}
+} 
+END_TEST
 
-START_TEST(test_spell_check_null_inputs)
+START_TEST(test_spell_check_fn_null_inputs)
 {
     char * words = NULL;
     char * dictionary = NULL;
     ck_assert(spell_check(words, dictionary) == 1);
 }
+END_TEST
 
 START_TEST(test_spell_check_invalid_word_list)
 {
@@ -506,7 +508,7 @@ Suite *check_dictionary_suite(void)
     check_spell_check_case = tcase_create("Spell Check");
     tcase_add_test(check_spell_check_case, test_spell_check_null_wordlist);
     tcase_add_test(check_spell_check_case, test_spell_check_null_dictionary);
-    tcase_add_test(check_spell_check_case, test_spell_check_null_inputs);
+    tcase_add_test(check_spell_check_case, test_spell_check_fn_null_inputs);
     tcase_add_test(check_spell_check_case, test_spell_check_invalid_word_list);
     tcase_add_test(check_spell_check_case, test_spell_check_invalid_dictionary);
     tcase_add_test(check_spell_check_case, test_spell_check_invalid_inputs);
