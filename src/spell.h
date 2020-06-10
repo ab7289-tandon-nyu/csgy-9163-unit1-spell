@@ -145,4 +145,20 @@ void remove_punc(const char * word, char * dest);
  * */
 void free_dictionary(hashmap_t hashtable[]);
 
+/**
+ * Main run function for the spell checker
+ **/
+/**
+ * Inputs
+ * words:           path to the file of words to be spell checked
+ * dictionary:      path to the dictionary file
+ * 
+ * Side Effects
+ * prints out to the console the list of misspelled words, if any
+ * 
+ * Returns
+ * int:             whether or not it ran successfully
+ * */
+int spell_check(char* words, char* dictionary);
+
 #endif /* dictionary_h */

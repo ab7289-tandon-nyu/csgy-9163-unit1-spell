@@ -11,9 +11,10 @@
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    printf("Hello, World2!\n");
-    hashmap_t map[HASH_SIZE];
-    bool loaded = load_dictionary("/Users/alexbiehl/dev/workspace/NYU/tandon_mscs/csgy9163_ApplicationSecurity/csgy-9163-unit1-spell/res/test_wordlist.txt", map);
+    
+    printf("arg0 %s \n", argv[0]);
+    printf("arg1 %s \n", argv[1]);
+    printf("arg2 %s \n", argv[2]);
 
-    return (loaded == true ? 0 : 1);
+    return spell_check(argv[1], argv[2]);
 }

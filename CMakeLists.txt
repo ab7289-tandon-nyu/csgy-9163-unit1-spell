@@ -101,7 +101,7 @@ set(CONFIG_HEADER ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 # Code Coverage
 append_coverage_compiler_flags()
 setup_target_for_coverage_gcovr_html(
-    NAME spell_coverage
+    NAME coverage
     EXECUTABLE ${CMAKE_BINARY_DIR}/test_spell
     DEPENDENCIES test_spell
     BASE_DIRECTORY "../"

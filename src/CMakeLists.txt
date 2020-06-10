@@ -13,8 +13,8 @@ set(HEADERS
 
 add_library(spell STATIC ${LIB_SOURCES} ${HEADERS})
 
-add_executable(main ${HEADERS} ${MAIN_SOURCES})
-target_link_libraries(main spell)
+add_executable(spell_check ${HEADERS} ${MAIN_SOURCES})
+target_link_libraries(spell_check spell)
 
 install(TARGETS spell
   RUNTIME DESTINATION bin
