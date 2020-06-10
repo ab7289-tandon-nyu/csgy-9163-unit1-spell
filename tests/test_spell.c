@@ -445,7 +445,7 @@ END_TEST
 START_TEST(test_spell_check_valid)
 {
     char * words = TESTWORDS;
-    char * dictionary = TESTDICT;
+    char * dictionary = DICTIONARY;
     ck_assert(spell_check(words, dictionary) == 0);
 }
 END_TEST
