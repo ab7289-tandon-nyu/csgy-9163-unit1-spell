@@ -434,5 +434,14 @@ int spell_check(char* words, char* dictionary) {
     } else {
         printf("All words are correctly spelled!\n");
     }
+
+    fclose(fp);
+    for (int i = 0; i < MAX_MISSPELLED; ++i) {
+        if (misspelled[i] != NULL) {
+            free(misspelled[i]);
+            misspelled[i] = NULL;
+        }
+    }
+    free_dictionary(&hashtable);
     return 0;
 }

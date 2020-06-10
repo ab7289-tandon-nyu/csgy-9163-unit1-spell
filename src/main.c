@@ -10,11 +10,6 @@
 #include <stdbool.h>
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    
-    printf("arg0 %s \n", argv[0]);
-    printf("arg1 %s \n", argv[1]);
-    printf("arg2 %s \n", argv[2]);
 
     return spell_check(argv[1], argv[2]);
 }
