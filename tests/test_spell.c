@@ -392,6 +392,49 @@ END_TEST
 
 // end remove_punc tests
 
+// start spell_check tests
+
+START_TEST(test_spell_check_null_wordlist)
+{
+    ck_assert(spell_check(NULL, TESTDICT) == 1);
+}
+END_TEST
+
+START_TEST(test_spell_check_null_dictionary)
+{
+    ck_assert(spell_check(TESTWORDS, NULL) == 1);
+}
+
+START_TEST(test_spell_check_null_inputs)
+{
+    ck_assert(spell_check(NULL, NULL) == 1);
+}
+
+START_TEST(test_spell_check_invalid_word_list)
+{
+    ck_assert(spell_check("invalid.txt", TESTDICT) == 1);
+}
+END_TEST
+
+START_TEST(test_spell_check_invalid_dictionary)
+{
+    ck_assert(spell_check(TESTWORDS, "invalid_dict.txt") == 1);
+}
+END_TEST
+
+START_TEST(test_spell_check_invalid_inputs)
+{
+    ck_assert(spell_check("invalid.txt", "invalid_dict.txt") == 1);
+}
+END_TEST
+
+START_TEST(test_spell_check_valid)
+{
+    ck_assert(spell_check(TESTWORDS, TESTDICT) == 0);
+}
+END_TEST
+// end spell_check tests
+
 Suite *check_dictionary_suite(void)
 {
     Suite *suite;
@@ -402,6 +445,7 @@ Suite *check_dictionary_suite(void)
     TCase *check_lower_case;
     TCase *check_split_line_case;
     TCase *check_remove_punc_case;
+    TCase *check_spell_check;
 
     suite = suite_create("check_dictionary");
 
@@ -444,6 +488,16 @@ Suite *check_dictionary_suite(void)
     tcase_add_test(check_remove_punc_case, test_remove_punc_one);
     tcase_add_test(check_remove_punc_case, test_remove_punc_two);
     suite_add_tcase(suite, check_remove_punc_case);
+
+    check_spell_check = tcase_create("Spell Check");
+    tcase_add_test(check_spell_check, test_spell_check_null_wordlist);
+    tcase_add_test(check_spell_check, test_spell_check_null_dictionary);
+    tcase_add_test(check_spell_check, test_spell_check_null_inputs);
+    tcase_add_test(check_spell_check, test_spell_check_invalid_word_list);
+    tcase_add_test(check_spell_check, test_spell_check_invalid_dictionary);
+    tcase_add_test(check_spell_check, test_spell_check_invalid_inputs);
+    tcase_add_test(check_spell_check, test_spell_check_valid);
+    suite_add_tcase(suite, check_spell_check);
 
     return suite;
 }

@@ -400,44 +400,55 @@ void free_dictionary(hashmap_t hashtable[])
 }
 
 // main driver for the library
-int spell_check(char* words, char* dictionary) {
+int spell_check(char *words, char *dictionary)
+{
 
-    if (!words || !dictionary) {
+    if (!words || !dictionary)
+    {
         printf("Warning! Please specify 2 arguments!\n");
         return 1;
     }
 
     hashmap_t hashtable[HASH_SIZE];
     bool loaded = load_dictionary(dictionary, &hashtable);
-    if (!loaded) {
+    if (!loaded)
+    {
         printf("Warning! Unable to load the dictionary file!\n");
         return 1;
     }
 
-    char* misspelled[MAX_MISSPELLED];
-    for (int i = 0; i < MAX_MISSPELLED; ++i) {
+    char *misspelled[MAX_MISSPELLED];
+    for (int i = 0; i < MAX_MISSPELLED; ++i)
+    {
         misspelled[i] = NULL;
     }
 
-    FILE* fp = fopen(words, "r");
-    if (!fp) {
+    FILE *fp = fopen(words, "r");
+    if (!fp)
+    {
         printf("Warning! Unable to open the word file!\n");
         return 1;
     }
-    
+
     int num_misspelled = check_words(fp, hashtable, &misspelled);
-    if (num_misspelled > 0) {
+    if (num_misspelled > 0)
+    {
         printf("The following %d words are misspelled!\n\n", num_misspelled);
-        for (int i = 0; i < num_misspelled; ++i) {
+        for (int i = 0; i < num_misspelled; ++i)
+        {
             printf("%s \n", misspelled[i]);
         }
-    } else {
+    }
+    else
+    {
         printf("All words are correctly spelled!\n");
     }
 
     fclose(fp);
-    for (int i = 0; i < MAX_MISSPELLED; ++i) {
-        if (misspelled[i] != NULL) {
+    for (int i = 0; i < MAX_MISSPELLED; ++i)
+    {
+        if (misspelled[i] != NULL)
+        {
             free(misspelled[i]);
             misspelled[i] = NULL;
         }
