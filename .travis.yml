@@ -25,7 +25,7 @@ script:
   # once CMake has done its job we just build using make as usual
   - make
   - make test
-  - make spell_coverage
+  - make coverage
 
 after_success:
   - coveralls 
