@@ -360,7 +360,6 @@ int split_line(const char *line, char **word_list, int list_length)
 void remove_punc(const char *word, char *dest)
 {
     char punc[] = {',', '!', '.', '?', ';', ':', '-', '{', '}', '[', ']', '(', ')', '\'', '"', NULL};
-    int len = strlen(word);
 
     for (; *word; ++word)
     {
