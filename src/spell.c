@@ -207,7 +207,6 @@ int check_words(FILE *fp, hashmap_t hashtable[], char *misspelled[])
     int num_misspelled = 0;
     char *line = NULL;
     size_t len = 0;
-    //ssize_t read;
 
     if (fp == NULL)
     {
@@ -215,7 +214,6 @@ int check_words(FILE *fp, hashmap_t hashtable[], char *misspelled[])
         return -1;
     }
 
-    //while ((read = getline(&line, &len, fp)) != -1)
     while ((getline(&line, &len, fp)) != -1)
     {
         // split line on spaces
