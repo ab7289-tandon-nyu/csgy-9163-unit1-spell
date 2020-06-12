@@ -33,4 +33,5 @@ after_success:
     --build-root ./
     --gcov-options '\-lp'
     --exclude-pattern '.+/CMakeFiles/'
+    --exclude-pattern '.+/tests/'
     --verbose
