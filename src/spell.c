@@ -165,7 +165,7 @@ bool check_word(const char *word, hashmap_t hashtable[])
 
     // set word to lowercase
     char l_word[LENGTH + 1];
-    lower_case(&l_word, word);
+    lower_case(l_word, word);
 
     bucket = hash_function(l_word);
     cursor = hashtable[bucket];
