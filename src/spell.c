@@ -223,7 +223,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char *misspelled[])
         {
             word_list[i] = NULL;
         }
-        int count = split_line(line, &word_list, len);
+        int count = split_line(line, word_list, len);
 
         //for each word in line
         for (int i = 0; i < count; ++i)

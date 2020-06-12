@@ -252,7 +252,7 @@ START_TEST(test_split_line_empty)
     {
         word_list[i] = NULL;
     }
-    int count = split_line(line, &word_list, len);
+    int count = split_line(line, word_list, len);
     bool count_correct = count == 0;
 
     ck_assert(count_correct);
@@ -278,7 +278,7 @@ START_TEST(test_split_line_single)
     {
         word_list[i] = NULL;
     }
-    int count = split_line(line, &word_list, len);
+    int count = split_line(line, word_list, len);
 
     bool count_correct = count == 1;
     bool word_correct = (strcmp(*word_list, "hello") == 0);
@@ -304,7 +304,7 @@ START_TEST(test_split_line_multiple)
     {
         word_list[i] = NULL;
     }
-    int count = split_line(line, &word_list, len);
+    int count = split_line(line, word_list, len);
     bool count_correct = count == 2;
 
     char *answers[] = {"hello", "world"};
@@ -340,7 +340,7 @@ START_TEST(test_split_line_multi_spaces)
     {
         word_list[i] = NULL;
     }
-    int count = split_line(line, &word_list, len);
+    int count = split_line(line, word_list, len);
     bool count_correct = count == 3;
 
     char *answers[] = {"hello", "world", "mate"};
