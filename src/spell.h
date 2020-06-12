@@ -159,6 +159,6 @@ void free_dictionary(hashmap_t hashtable[]);
  * Returns
  * int:             whether or not it ran successfully
  * */
-int spell_check(char* words, char* dictionary);
+int spell_check(const char* words, const char* dictionary);
 
 #endif /* dictionary_h */

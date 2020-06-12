@@ -398,7 +398,7 @@ void free_dictionary(hashmap_t hashtable[])
 }
 
 // main driver for the library
-int spell_check(char *words, char *dictionary)
+int spell_check(const char *words, const char *dictionary)
 {
 
     if (!words || !dictionary)
