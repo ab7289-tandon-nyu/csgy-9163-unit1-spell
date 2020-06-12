@@ -24,7 +24,7 @@ bool check_bucket(hashmap_t hashtable[], char *test_val);
 START_TEST(test_dictionary_normal)
 {
     hashmap_t hashtable[HASH_SIZE];
-    ck_assert(load_dictionary(TESTDICT, &hashtable));
+    ck_assert(load_dictionary(TESTDICT, hashtable));
     // check buckets
 
     char *test_val = "first";
@@ -42,7 +42,7 @@ START_TEST(test_dictionary_normal)
     //hash = hash_function(test_val);
     ck_assert(check_bucket(hashtable, test_val));
 
-    free_dictionary(&hashtable);
+    free_dictionary(hashtable);
 }
 END_TEST
 
@@ -50,7 +50,7 @@ START_TEST(test_dictionary_one_bucket)
 {
 
     hashmap_t hashtable[HASH_SIZE];
-    ck_assert(load_dictionary("../res/one_bucket.txt", &hashtable));
+    ck_assert(load_dictionary("../res/one_bucket.txt", hashtable));
 
     char *test_vals[] = {
         "Justice",
@@ -70,7 +70,7 @@ START_TEST(test_dictionary_one_bucket)
         ck_assert(check_word(test_vals[i], hashtable));
     }
 
-    free_dictionary(&hashtable);
+    free_dictionary(hashtable);
 }
 END_TEST
 
@@ -93,9 +93,9 @@ START_TEST(test_dictionary_empty_filename)
 {
 
     hashmap_t hashtable[HASH_SIZE];
-    ck_assert(!load_dictionary("bad_file.txt", &hashtable));
+    ck_assert(!load_dictionary("bad_file.txt", hashtable));
 
-    free_dictionary(&hashtable);
+    free_dictionary(hashtable);
 }
 END_TEST
 // end dictionary load test cases
@@ -105,11 +105,11 @@ START_TEST(test_check_word_empty_word)
 {
 
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(TESTDICT, &hashtable);
+    load_dictionary(TESTDICT, hashtable);
     const char *null_word = NULL;
     ck_assert(!check_word(null_word, hashtable));
 
-    free_dictionary(&hashtable);
+    free_dictionary(hashtable);
 }
 END_TEST
 
@@ -117,11 +117,11 @@ START_TEST(test_check_word_empty_table)
 {
 
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(TESTDICT, &hashtable);
+    load_dictionary(TESTDICT, hashtable);
     const char *word = "first";
     ck_assert(!check_word(word, NULL));
 
-    free_dictionary(&hashtable);
+    free_dictionary(hashtable);
 }
 END_TEST
 
@@ -129,7 +129,7 @@ START_TEST(test_check_word)
 {
 
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(TESTDICT, &hashtable);
+    load_dictionary(TESTDICT, hashtable);
 
     const char *w = "first";
     ck_assert(check_word(w, hashtable));
@@ -143,7 +143,7 @@ START_TEST(test_check_word)
     const char *word_invalid = "nOt HeRe";
     ck_assert(!check_word(word_invalid, hashtable));
 
-    free_dictionary(&hashtable);
+    free_dictionary(hashtable);
 }
 END_TEST
 
@@ -151,7 +151,7 @@ START_TEST(test_check_word_normal)
 {
 
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(DICTIONARY, &hashtable);
+    load_dictionary(DICTIONARY, hashtable);
     const char *correct_word = "Justice";
     const char *punctuation_word_2 = "pl.ace";
     ck_assert(check_word(correct_word, hashtable));
@@ -161,7 +161,7 @@ START_TEST(test_check_word_normal)
     const char *question_word = "?question?";
     ck_assert(!check_word(question_word, hashtable));
 
-    free_dictionary(&hashtable);
+    free_dictionary(hashtable);
 }
 END_TEST
 
@@ -173,7 +173,7 @@ START_TEST(test_check_words_normal)
 {
 
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(DICTIONARY, &hashtable);
+    load_dictionary(DICTIONARY, hashtable);
     char *expected[3];
     expected[0] = "sogn";
     expected[1] = "skyn";
@@ -184,7 +184,7 @@ START_TEST(test_check_words_normal)
         misspelled[i] = NULL;
     }
     FILE *fp = fopen(TESTWORDS, "r");
-    int num_misspelled = check_words(fp, hashtable, &misspelled);
+    int num_misspelled = check_words(fp, hashtable, misspelled);
     ck_assert(num_misspelled == 3);
     bool test = strlen(misspelled[0]) == strlen(expected[0]);
     int len1 = strlen(misspelled[0]);
@@ -204,7 +204,7 @@ START_TEST(test_check_words_normal)
             misspelled[i] = NULL;
         }
     }
-    free_dictionary(&hashtable);
+    free_dictionary(hashtable);
 }
 END_TEST
 
@@ -252,7 +252,7 @@ START_TEST(test_split_line_empty)
     {
         word_list[i] = NULL;
     }
-    int count = split_line(line, &word_list, len);
+    int count = split_line(line, word_list, len);
     bool count_correct = count == 0;
 
     ck_assert(count_correct);
@@ -278,7 +278,7 @@ START_TEST(test_split_line_single)
     {
         word_list[i] = NULL;
     }
-    int count = split_line(line, &word_list, len);
+    int count = split_line(line, word_list, len);
 
     bool count_correct = count == 1;
     bool word_correct = (strcmp(*word_list, "hello") == 0);
@@ -304,7 +304,7 @@ START_TEST(test_split_line_multiple)
     {
         word_list[i] = NULL;
     }
-    int count = split_line(line, &word_list, len);
+    int count = split_line(line, word_list, len);
     bool count_correct = count == 2;
 
     char *answers[] = {"hello", "world"};
@@ -340,7 +340,7 @@ START_TEST(test_split_line_multi_spaces)
     {
         word_list[i] = NULL;
     }
-    int count = split_line(line, &word_list, len);
+    int count = split_line(line, word_list, len);
     bool count_correct = count == 3;
 
     char *answers[] = {"hello", "world", "mate"};
@@ -539,16 +539,15 @@ int main(void)
 bool check_bucket(hashmap_t hashtable[], char *test_val)
 {
     hashmap_t map = hashtable[hash_function(test_val)];
-    while (map != NULL &&
-           map->next != NULL &&
-           map->word != NULL &&
-           strcmp(test_val, map->word) != 0)
-    {
-        map = map->next;
-    }
-    if (map->word == NULL)
-    {
+    
+    if (!map) {
         return false;
     }
-    return (strcmp(test_val, map->word) == 0);
+    while (map != NULL) {
+        if (strcmp(map->word, test_val) == 0) {
+            return true;
+        }
+        map = map->next;
+    }
+    return false;
 }

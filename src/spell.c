@@ -154,7 +154,7 @@ bool check_word(const char *word, hashmap_t hashtable[])
     int bucket = hash_function(word);
     hashmap_t cursor = hashtable[bucket];
 
-    while (cursor != NULL && cursor->word != NULL)
+    while (cursor != NULL)
     {
         if (strcmp(word, cursor->word) == 0)
         {
@@ -165,7 +165,7 @@ bool check_word(const char *word, hashmap_t hashtable[])
 
     // set word to lowercase
     char l_word[LENGTH + 1];
-    lower_case(&l_word, word);
+    lower_case(l_word, word);
 
     bucket = hash_function(l_word);
     cursor = hashtable[bucket];
@@ -223,7 +223,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char *misspelled[])
         {
             word_list[i] = NULL;
         }
-        int count = split_line(line, &word_list, len);
+        int count = split_line(line, word_list, len);
 
         //for each word in line
         for (int i = 0; i < count; ++i)
@@ -235,7 +235,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char *misspelled[])
                 dest[i] = NULL;
             }
             //remove punctuation
-            remove_punc(word_list[i], &dest);
+            remove_punc(word_list[i], dest);
             //if not check word
             if (!check_word(dest, hashtable) && num_misspelled < MAX_MISSPELLED)
             {
@@ -398,7 +398,7 @@ void free_dictionary(hashmap_t hashtable[])
 }
 
 // main driver for the library
-int spell_check(char *words, char *dictionary)
+int spell_check(const char *words, const char *dictionary)
 {
 
     if (!words || !dictionary)
@@ -408,7 +408,7 @@ int spell_check(char *words, char *dictionary)
     }
 
     hashmap_t hashtable[HASH_SIZE];
-    bool loaded = load_dictionary(dictionary, &hashtable);
+    bool loaded = load_dictionary(dictionary, hashtable);
     if (!loaded)
     {
         printf("Warning! Unable to load the dictionary file!\n");
@@ -428,7 +428,7 @@ int spell_check(char *words, char *dictionary)
         return 1;
     }
 
-    int num_misspelled = check_words(fp, hashtable, &misspelled);
+    int num_misspelled = check_words(fp, hashtable, misspelled);
     if (num_misspelled > 0)
     {
         printf("The following %d words are misspelled!\n\n", num_misspelled);
@@ -451,6 +451,6 @@ int spell_check(char *words, char *dictionary)
             misspelled[i] = NULL;
         }
     }
-    free_dictionary(&hashtable);
+    free_dictionary(hashtable);
     return 0;
 }
