@@ -39,6 +39,7 @@ set(TEST_SRC_DIR ${PROJECT_SOURCE_DIR}/tests)
 ###############################################################################
 # Set build features
 set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_C_COMPILER "/usr/local/bin/afl-clang")
 
 ###############################################################################
 include(CheckCSourceCompiles)
@@ -49,7 +50,7 @@ include(CheckIncludeFiles)
 include(CheckLibraryExists)
 include(CheckSymbolExists)
 include(CheckTypeSize)
-include(CodeCoverage)
+# include(CodeCoverage)
 
 ###############################################################################
 # Check headers
@@ -99,14 +100,14 @@ set(CONFIG_HEADER ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 ###############################################################################
 # Code Coverage
-append_coverage_compiler_flags()
-setup_target_for_coverage_gcovr_html(
-    NAME coverage
-    EXECUTABLE ${CMAKE_BINARY_DIR}/test_spell
-    DEPENDENCIES test_spell
-    BASE_DIRECTORY "../"
-    EXCLUDE ${TEST_SRC_DIR}
-)
+# append_coverage_compiler_flags()
+# setup_target_for_coverage_gcovr_html(
+#     NAME coverage
+#     EXECUTABLE ${CMAKE_BINARY_DIR}/test_spell
+#     DEPENDENCIES test_spell
+#     BASE_DIRECTORY "../"
+#     EXCLUDE ${TEST_SRC_DIR}
+# )
 
 ###############################################################################
 # Subdirectories

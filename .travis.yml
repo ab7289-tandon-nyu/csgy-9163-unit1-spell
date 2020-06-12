@@ -25,13 +25,13 @@ script:
   # once CMake has done its job we just build using make as usual
   - make
   - make test
-  - make coverage
+  # - make coverage
 
-after_success:
-  - coveralls 
-    --root ../
-    --build-root ./
-    --gcov-options '\-lp'
-    --exclude-pattern '.+/CMakeFiles/'
-    --exclude-pattern '.+/tests/'
-    --verbose
+# after_success:
+#   - coveralls 
+#     --root ../
+#     --build-root ./
+#     --gcov-options '\-lp'
+#     --exclude-pattern '.+/CMakeFiles/'
+#     --exclude-pattern '.+/tests/'
+#     --verbose
