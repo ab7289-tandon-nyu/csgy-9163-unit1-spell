@@ -408,7 +408,7 @@ int spell_check(char *words, char *dictionary)
     }
 
     hashmap_t hashtable[HASH_SIZE];
-    bool loaded = load_dictionary(dictionary, &hashtable);
+    bool loaded = load_dictionary(dictionary, hashtable);
     if (!loaded)
     {
         printf("Warning! Unable to load the dictionary file!\n");
