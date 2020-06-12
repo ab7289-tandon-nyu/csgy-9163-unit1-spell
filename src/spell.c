@@ -428,7 +428,7 @@ int spell_check(char *words, char *dictionary)
         return 1;
     }
 
-    int num_misspelled = check_words(fp, hashtable, &misspelled);
+    int num_misspelled = check_words(fp, hashtable, misspelled);
     if (num_misspelled > 0)
     {
         printf("The following %d words are misspelled!\n\n", num_misspelled);
