@@ -235,7 +235,7 @@ int check_words(FILE *fp, hashmap_t hashtable[], char *misspelled[])
                 dest[i] = NULL;
             }
             //remove punctuation
-            remove_punc(word_list[i], &dest);
+            remove_punc(word_list[i], dest);
             //if not check word
             if (!check_word(dest, hashtable) && num_misspelled < MAX_MISSPELLED)
             {
