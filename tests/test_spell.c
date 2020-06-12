@@ -539,16 +539,15 @@ int main(void)
 bool check_bucket(hashmap_t hashtable[], char *test_val)
 {
     hashmap_t map = hashtable[hash_function(test_val)];
-    while (map != NULL &&
-           map->next != NULL &&
-           map->word != NULL &&
-           strcmp(test_val, map->word) != 0)
-    {
-        map = map->next;
-    }
-    if (map->word == NULL)
-    {
+    
+    if (!map) {
         return false;
     }
-    return (strcmp(test_val, map->word) == 0);
+    while (map != NULL) {
+        if (strcmp(map->word, test_val) == 0) {
+            return true;
+        }
+        map = map->next;
+    }
+    return false;
 }

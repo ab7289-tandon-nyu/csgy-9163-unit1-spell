@@ -451,6 +451,6 @@ int spell_check(char *words, char *dictionary)
             misspelled[i] = NULL;
         }
     }
-    free_dictionary(&hashtable);
+    free_dictionary(hashtable);
     return 0;
 }
