@@ -9,7 +9,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char *argv[])
+{
 
     return spell_check(argv[1], argv[2]);
 }

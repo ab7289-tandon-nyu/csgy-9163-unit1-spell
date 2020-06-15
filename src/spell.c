@@ -151,6 +151,12 @@ bool check_word(const char *word, hashmap_t hashtable[])
         return false;
     }
 
+    // make sure that the word isn't a number
+    if (is_number(word))
+    {
+        return true;
+    }
+
     int bucket = hash_function(word);
     hashmap_t cursor = hashtable[bucket];
 
@@ -453,4 +459,17 @@ int spell_check(const char *words, const char *dictionary)
     }
     free_dictionary(hashtable);
     return 0;
+}
+
+bool is_number(const char *word)
+{
+
+    for (int i = 0; word[i] != '\0'; ++i)
+    {
+        if (isdigit(word[i]) == 0)
+        {
+            return false;
+        }
+    }
+    return true;
 }

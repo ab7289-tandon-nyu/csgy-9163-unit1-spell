@@ -165,6 +165,28 @@ START_TEST(test_check_word_normal)
 }
 END_TEST
 
+START_TEST(test_check_word_num)
+{
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(DICTIONARY, hashtable);
+    const char *word = "1234";
+    ck_assert(check_word(word, hashtable));
+
+    free_dictionary(hashtable);
+}
+END_TEST
+
+START_TEST(test_check_word_num_invalid)
+{
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(DICTIONARY, hashtable);
+    const char *word = "12abc34";
+    ck_assert(!check_word(word, hashtable));
+
+    free_dictionary(hashtable);
+}
+END_TEST
+
 //end check word_test cases
 
 // start check_words test case
@@ -396,60 +418,79 @@ END_TEST
 
 START_TEST(test_spell_check_null_wordlist)
 {
-    char * words = NULL;
-    char * dictionary = TESTDICT;
+    char *words = NULL;
+    char *dictionary = TESTDICT;
     ck_assert(spell_check(words, dictionary) == 1);
 }
 END_TEST
 
 START_TEST(test_spell_check_null_dictionary)
 {
-    char * words = TESTWORDS;
-    char * dictionary = NULL;
+    char *words = TESTWORDS;
+    char *dictionary = NULL;
     ck_assert(spell_check(words, dictionary) == 1);
-} 
+}
 END_TEST
 
 START_TEST(test_spell_check_fn_null_inputs)
 {
-    char * words = NULL;
-    char * dictionary = NULL;
+    char *words = NULL;
+    char *dictionary = NULL;
     ck_assert(spell_check(words, dictionary) == 1);
 }
 END_TEST
 
 START_TEST(test_spell_check_invalid_word_list)
 {
-    char * words = "invalid.txt";
-    char * dictionary = TESTDICT;
+    char *words = "invalid.txt";
+    char *dictionary = TESTDICT;
     ck_assert(spell_check(words, dictionary) == 1);
 }
 END_TEST
 
 START_TEST(test_spell_check_invalid_dictionary)
 {
-    char * words = TESTWORDS;
-    char * dictionary = "invalid_dict.txt";
+    char *words = TESTWORDS;
+    char *dictionary = "invalid_dict.txt";
     ck_assert(spell_check(words, dictionary) == 1);
 }
 END_TEST
 
 START_TEST(test_spell_check_invalid_inputs)
 {
-    char * words = "invalid.txt";
-    char * dictionary = "invalid_dict.txt";
+    char *words = "invalid.txt";
+    char *dictionary = "invalid_dict.txt";
     ck_assert(spell_check(words, dictionary) == 1);
 }
 END_TEST
 
 START_TEST(test_spell_check_valid)
 {
-    char * words = TESTWORDS;
-    char * dictionary = DICTIONARY;
+    char *words = TESTWORDS;
+    char *dictionary = DICTIONARY;
     ck_assert(spell_check(words, dictionary) == 0);
 }
 END_TEST
 // end spell_check tests
+
+// start is_number tests
+
+START_TEST(test_is_num_valid)
+{
+
+    char *word = '1111';
+    ck_assert(is_number(&word));
+}
+END_TEST
+
+START_TEST(test_is_num_invalid)
+{
+    char *word = '1a11';
+    ck_assert(!is_number(&word));
+}
+END_TEST
+
+// end is_number tests
 
 Suite *check_dictionary_suite(void)
 {
@@ -462,6 +503,7 @@ Suite *check_dictionary_suite(void)
     TCase *check_split_line_case;
     TCase *check_remove_punc_case;
     TCase *check_spell_check_case;
+    TCase *check_is_num_case;
 
     suite = suite_create("check_dictionary");
 
@@ -481,6 +523,8 @@ Suite *check_dictionary_suite(void)
     tcase_add_test(check_word_case, test_check_word_empty_table);
     tcase_add_test(check_word_case, test_check_word);
     tcase_add_test(check_word_case, test_check_word_normal);
+    tcase_add_test(check_word_case, test_check_word_num);
+    tcase_add_test(check_word_case, test_check_word_num_invalid);
     suite_add_tcase(suite, check_word_case);
 
     check_words_case = tcase_create("Check Words");
@@ -515,6 +559,11 @@ Suite *check_dictionary_suite(void)
     tcase_add_test(check_spell_check_case, test_spell_check_valid);
     suite_add_tcase(suite, check_spell_check_case);
 
+    check_is_num_case = tcase_create("Is Number");
+    tcase_add_test(check_is_num_case, test_is_num_valid);
+    tcase_add_test(check_is_num_case, test_is_num_invalid);
+    suite_add_tcase(suite, check_is_num_case);
+
     return suite;
 }
 
@@ -539,12 +588,15 @@ int main(void)
 bool check_bucket(hashmap_t hashtable[], char *test_val)
 {
     hashmap_t map = hashtable[hash_function(test_val)];
-    
-    if (!map) {
+
+    if (!map)
+    {
         return false;
     }
-    while (map != NULL) {
-        if (strcmp(map->word, test_val) == 0) {
+    while (map != NULL)
+    {
+        if (strcmp(map->word, test_val) == 0)
+        {
             return true;
         }
         map = map->next;

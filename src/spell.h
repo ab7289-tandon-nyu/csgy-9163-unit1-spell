@@ -24,11 +24,10 @@
 typedef struct node
 {
     char word[LENGTH + 1];
-    struct node* next;
-}
-node;
+    struct node *next;
+} node;
 
-typedef node* hashmap_t;
+typedef node *hashmap_t;
 
 /**
  * Array misspelled is populated with words that are misspelled. Returns the length of misspelled.
@@ -49,7 +48,7 @@ typedef node* hashmap_t;
  * Example:
  *  int num_misspelled = check_words(text_file, hashtable, misspelled);
  **/
-int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]);
+int check_words(FILE *fp, hashmap_t hashtable[], char *misspelled[]);
 
 /**
  * Returns true if word is in dictionary else false.
@@ -67,7 +66,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]);
  * Example:
  *  bool correct  = check_word(word, hashtable);
  **/
-bool check_word(const char* word, hashmap_t hashtable[]);
+bool check_word(const char *word, hashmap_t hashtable[]);
 
 /**
  * Loads dictionary into memory.  Returns true if successful else false.
@@ -86,13 +85,12 @@ bool check_word(const char* word, hashmap_t hashtable[]);
  * Example:
  *  bool success = load_dictionary("wordlist.txt", hashtable);
  **/
-bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[]);
-
+bool load_dictionary(const char *dictionary_file, hashmap_t hashtable[]);
 
 /**
  * Already implemented in dictionary.c
  **/
-int hash_function(const char* word);
+int hash_function(const char *word);
 
 /**
  * Returns a string as lower case
@@ -108,7 +106,7 @@ int hash_function(const char* word);
  * Modifies:
  *  l_word:      l_word should be filled by the word all lower case
  **/
-bool lower_case(char * l_word, const char * word);
+bool lower_case(char *l_word, const char *word);
 
 /**
  * Returns an array of strings and a length
@@ -125,7 +123,7 @@ bool lower_case(char * l_word, const char * word);
  * Modifies:
  *  word_list:      word_list should be filled with the split words
  **/
-int split_line(const char * line, char ** word_list, int len);
+int split_line(const char *line, char **word_list, int len);
 
 /**
  * Removes all the punctionation marks from a word'
@@ -138,7 +136,7 @@ int split_line(const char * line, char ** word_list, int len);
  * Modifies:
  *  dest:           word less punctuation
  * */
-void remove_punc(const char * word, char * dest);
+void remove_punc(const char *word, char *dest);
 
 /**
  * Convenience function to free the dictionary after we're all done
@@ -159,6 +157,11 @@ void free_dictionary(hashmap_t hashtable[]);
  * Returns
  * int:             whether or not it ran successfully
  * */
-int spell_check(const char* words, const char* dictionary);
+int spell_check(const char *words, const char *dictionary);
+
+/**
+ * Check if a word is all digits
+ * */
+bool is_number(const char *word);
 
 #endif /* dictionary_h */
