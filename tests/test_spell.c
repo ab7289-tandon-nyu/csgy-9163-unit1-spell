@@ -168,20 +168,24 @@ END_TEST
 START_TEST(test_check_word_num)
 {
     hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(DICTIONARY, hashtable);
     const char *word = "1234";
     ck_assert(check_word(word, hashtable));
 
     free_dictionary(hashtable);
 }
+END_TEST
 
 START_TEST(test_check_word_num_invalid)
 {
     hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(DICTIONARY, hashtable);
     const char *word = "12abc34";
     ck_assert(!check_word(word, hashtable));
 
     free_dictionary(hashtable);
 }
+END_TEST
 
 //end check word_test cases
 
@@ -519,6 +523,8 @@ Suite *check_dictionary_suite(void)
     tcase_add_test(check_word_case, test_check_word_empty_table);
     tcase_add_test(check_word_case, test_check_word);
     tcase_add_test(check_word_case, test_check_word_normal);
+    tcase_add_test(check_word_case, test_check_word_num);
+    tcase_add_test(check_word_case, test_check_word_num_invalid);
     suite_add_tcase(suite, check_word_case);
 
     check_words_case = tcase_create("Check Words");

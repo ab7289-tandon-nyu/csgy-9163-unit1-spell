@@ -152,7 +152,7 @@ bool check_word(const char *word, hashmap_t hashtable[])
     }
 
     // make sure that the word isn't a number
-    if (is_number(&word)) {
+    if (is_number(word)) {
         return true;
     }
 
