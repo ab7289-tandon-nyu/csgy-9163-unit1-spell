@@ -165,6 +165,24 @@ START_TEST(test_check_word_normal)
 }
 END_TEST
 
+START_TEST(test_check_word_num)
+{
+    hashmap_t hashtable[HASH_SIZE];
+    const char *word = "1234";
+    ck_assert(check_word(word, hashtable));
+
+    free_dictionary(hashtable);
+}
+
+START_TEST(test_check_word_num_invalid)
+{
+    hashmap_t hashtable[HASH_SIZE];
+    const char *word = "12abc34";
+    ck_assert(!check_word(word, hashtable));
+
+    free_dictionary(hashtable);
+}
+
 //end check word_test cases
 
 // start check_words test case
@@ -451,6 +469,25 @@ START_TEST(test_spell_check_valid)
 END_TEST
 // end spell_check tests
 
+// start is_number tests
+
+START_TEST(test_is_num_valid) {
+
+    char *word = '1111';
+    ck_assert(is_number(&word));
+
+}
+END_TEST
+
+START_TEST(test_is_num_invalid)
+{
+    char *word = '1a11';
+    ck_assert(!is_number(&word));
+}
+END_TEST
+
+// end is_number tests
+
 Suite *check_dictionary_suite(void)
 {
     Suite *suite;
@@ -462,6 +499,7 @@ Suite *check_dictionary_suite(void)
     TCase *check_split_line_case;
     TCase *check_remove_punc_case;
     TCase *check_spell_check_case;
+    TCase *check_is_num_case;
 
     suite = suite_create("check_dictionary");
 
@@ -514,6 +552,11 @@ Suite *check_dictionary_suite(void)
     tcase_add_test(check_spell_check_case, test_spell_check_invalid_inputs);
     tcase_add_test(check_spell_check_case, test_spell_check_valid);
     suite_add_tcase(suite, check_spell_check_case);
+
+    check_is_num_case = tcase_create("Is Number");
+    tcase_add_test(check_is_num_case, test_is_num_valid);
+    tcase_add_test(check_is_num_case, test_is_num_invalid);
+    suite_add_tcase(suite, check_is_num_case);
 
     return suite;
 }

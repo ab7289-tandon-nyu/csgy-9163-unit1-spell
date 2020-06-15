@@ -161,4 +161,9 @@ void free_dictionary(hashmap_t hashtable[]);
  * */
 int spell_check(const char* words, const char* dictionary);
 
+/**
+ * Check if a word is all digits
+ * */
+bool is_number(const char* word);
+
 #endif /* dictionary_h */
