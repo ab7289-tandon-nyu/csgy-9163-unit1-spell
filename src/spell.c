@@ -152,7 +152,8 @@ bool check_word(const char *word, hashmap_t hashtable[])
     }
 
     // make sure that the word isn't a number
-    if (is_number(word)) {
+    if (is_number(word))
+    {
         return true;
     }
 
@@ -460,9 +461,11 @@ int spell_check(const char *words, const char *dictionary)
     return 0;
 }
 
-bool is_number(const char* word) {
-    
-    for (int i = 0; word[i] != '\0'; ++i) {
+bool is_number(const char *word)
+{
+
+    for (int i = 0; word[i] != '\0'; ++i)
+    {
         if (isdigit(word[i]) == 0)
         {
             return false;

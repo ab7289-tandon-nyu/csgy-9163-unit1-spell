@@ -418,56 +418,56 @@ END_TEST
 
 START_TEST(test_spell_check_null_wordlist)
 {
-    char * words = NULL;
-    char * dictionary = TESTDICT;
+    char *words = NULL;
+    char *dictionary = TESTDICT;
     ck_assert(spell_check(words, dictionary) == 1);
 }
 END_TEST
 
 START_TEST(test_spell_check_null_dictionary)
 {
-    char * words = TESTWORDS;
-    char * dictionary = NULL;
+    char *words = TESTWORDS;
+    char *dictionary = NULL;
     ck_assert(spell_check(words, dictionary) == 1);
-} 
+}
 END_TEST
 
 START_TEST(test_spell_check_fn_null_inputs)
 {
-    char * words = NULL;
-    char * dictionary = NULL;
+    char *words = NULL;
+    char *dictionary = NULL;
     ck_assert(spell_check(words, dictionary) == 1);
 }
 END_TEST
 
 START_TEST(test_spell_check_invalid_word_list)
 {
-    char * words = "invalid.txt";
-    char * dictionary = TESTDICT;
+    char *words = "invalid.txt";
+    char *dictionary = TESTDICT;
     ck_assert(spell_check(words, dictionary) == 1);
 }
 END_TEST
 
 START_TEST(test_spell_check_invalid_dictionary)
 {
-    char * words = TESTWORDS;
-    char * dictionary = "invalid_dict.txt";
+    char *words = TESTWORDS;
+    char *dictionary = "invalid_dict.txt";
     ck_assert(spell_check(words, dictionary) == 1);
 }
 END_TEST
 
 START_TEST(test_spell_check_invalid_inputs)
 {
-    char * words = "invalid.txt";
-    char * dictionary = "invalid_dict.txt";
+    char *words = "invalid.txt";
+    char *dictionary = "invalid_dict.txt";
     ck_assert(spell_check(words, dictionary) == 1);
 }
 END_TEST
 
 START_TEST(test_spell_check_valid)
 {
-    char * words = TESTWORDS;
-    char * dictionary = DICTIONARY;
+    char *words = TESTWORDS;
+    char *dictionary = DICTIONARY;
     ck_assert(spell_check(words, dictionary) == 0);
 }
 END_TEST
@@ -475,11 +475,11 @@ END_TEST
 
 // start is_number tests
 
-START_TEST(test_is_num_valid) {
+START_TEST(test_is_num_valid)
+{
 
     char *word = '1111';
     ck_assert(is_number(&word));
-
 }
 END_TEST
 
@@ -588,12 +588,15 @@ int main(void)
 bool check_bucket(hashmap_t hashtable[], char *test_val)
 {
     hashmap_t map = hashtable[hash_function(test_val)];
-    
-    if (!map) {
+
+    if (!map)
+    {
         return false;
     }
-    while (map != NULL) {
-        if (strcmp(map->word, test_val) == 0) {
+    while (map != NULL)
+    {
+        if (strcmp(map->word, test_val) == 0)
+        {
             return true;
         }
         map = map->next;
